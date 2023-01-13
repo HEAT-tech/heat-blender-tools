@@ -10,6 +10,7 @@ Features include:
 * Zero the location of the armature root to world-space
 * Center the armature hips above the root bone (WIP)
 * Rename bones between popular schemas
+* Convert bones between popular schemas (WIP)
 * Multiexport to FBX, GLTF (GLB)
 * Direct upload to Heat (WIP)
 * Import Heat animations (coming soon)
