@@ -46,7 +46,8 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
 
         layout.separator()
         layout.label(text="Preview:")
-        layout.template_icon(icon_value=preview.icon_id, scale=10.0)
+        preview_box = layout.box()
+        preview_box.template_icon(icon_value=preview.icon_id, scale=10.0)
 
 
     @classmethod

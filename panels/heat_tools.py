@@ -8,6 +8,7 @@ class HeatToolsPanel(bpy.types.Panel):
     bl_region_type = 'UI'
     bl_category = "HeatTools"
     bl_order = 1
+    bl_options = {'DEFAULT_CLOSED'}
 
     def draw(self, context):
         layout = self.layout
