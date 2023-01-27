@@ -7,7 +7,7 @@ class HeatToolsPanel(bpy.types.Panel):
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
     bl_category = "HeatTools"
-    bl_order = 0
+    bl_order = 1
 
     def draw(self, context):
         layout = self.layout
