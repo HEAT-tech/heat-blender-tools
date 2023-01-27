@@ -23,7 +23,6 @@ classes = (
     ImportDirOperator,
     ExportOperator,
     APISearchAnimationsOperator,
-    APIPreviewOperator,
 
     HeatAnimationResultListItem,
     HeatAnimationResultsList,
