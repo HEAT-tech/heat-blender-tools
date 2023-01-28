@@ -30,39 +30,55 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
 
         layout.operator("heat.api_search_animations")
 
-        layout.template_list(
-            "HeatAnimationResultsList",
-            "Heat_Animation_Results_List",
-            context.scene,
-            "heat_animation_results_list",
-            context.scene,
-            "heat_animation_results_list_index"
-        )
-        # layout.operator("heat.api_preview_animation")
-
-        tpath = get_addon_thumbnail_path('dummy.png')
-        img = bpy.data.images.load(tpath, check_existing = True)
-        preview = img.preview_ensure()
-
+        if context.scene.heat_animation_results_loading:
+            layout.label(text="Fetching results...")
+        else:
+            layout.template_list(
+                "HeatAnimationResultsList",
+                "Heat_Animation_Results_List",
+                context.scene,
+                "heat_animation_results_list",
+                context.scene,
+                "heat_animation_results_list_index"
+            )
         layout.separator()
+
+        self.draw_heat_animation_preview(context, layout)
+
+        layout.operator("heat.download_animation", icon="IMPORT", text="Download")
+
+
+    def draw_heat_animation_preview(self, context, layout):
         layout.label(text="Preview:")
         preview_box = layout.box()
+        if context.scene.heat_animation_results_list_index >= 0:
+            tpath = get_addon_thumbnail_path('dummy.png')
+        else:
+            tpath = get_addon_thumbnail_path('heat.png')
+
+        img = bpy.data.images.load(tpath, check_existing = True)
+        preview = img.preview_ensure()
         preview_box.template_icon(icon_value=preview.icon_id, scale=10.0)
 
 
     @classmethod
     def register(cls):
+        bpy.types.Scene.heat_animation_results_loading = bpy.props.BoolProperty(
+            name = "Heat animation results fetch state",
+            default = False
+        )
         bpy.types.Scene.heat_animation_results_list = bpy.props.CollectionProperty(
             type=custom_types.HeatAnimationResultListItem
         )
         bpy.types.Scene.heat_animation_results_list_index = bpy.props.IntProperty(
             name = "Index for Heat animation results",
-            default = 0
+            default = -1
         )
         print("Registered: %s" % cls.bl_label)
 
     @classmethod
     def unregister(cls):
+        del bpy.types.Scene.heat_animation_results_loading
         del bpy.types.Scene.heat_animation_results_list
         del bpy.types.Scene.heat_animation_results_list_index
         print("Unregistered: %s" % cls.bl_label)

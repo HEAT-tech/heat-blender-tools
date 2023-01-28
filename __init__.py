@@ -2,6 +2,7 @@ import bpy
 from .panels import *
 from .operators import *
 from .custom_types import *
+from .services import AsyncLoopModalOperator, AsyncModalOperatorMixin, setup_asyncio_executor
 
 bl_info = {
     "name": "HeatBlender",
@@ -23,6 +24,7 @@ classes = (
     ImportDirOperator,
     ExportOperator,
     APISearchAnimationsOperator,
+    APIDownloadAnimationOperator,
 
     HeatAnimationResultListItem,
     HeatAnimationResultsList,
@@ -32,4 +34,14 @@ classes = (
     HeatToolsBrowserPanel
 )
 
-register, unregister = bpy.utils.register_classes_factory(classes)
+factory_register, factory_unregister = bpy.utils.register_classes_factory(classes)
+
+def register():
+    factory_register()
+
+    setup_asyncio_executor()
+    bpy.utils.register_class(AsyncLoopModalOperator)
+
+def unregister():
+    factory_unregister()
+    bpy.utils.unregister_class(AsyncLoopModalOperator)

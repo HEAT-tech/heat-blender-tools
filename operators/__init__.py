@@ -7,3 +7,4 @@ from .process_batch import *
 from .import_directory import *
 from .export_directory import *
 from .api_search_animations import *
+from .api_download_animation import *
