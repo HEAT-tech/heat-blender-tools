@@ -25,6 +25,9 @@ classes = (
     ExportOperator,
     APISearchAnimationsOperator,
     APIDownloadAnimationOperator,
+    AuthRegisterOperator,
+    AuthLoginOperator,
+
 
     HeatAnimationResultListItem,
     HeatAnimationResultsList,

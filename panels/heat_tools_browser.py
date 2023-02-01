@@ -25,6 +25,11 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
+
+        if not context.scene.heat_auth_is_logged_in:
+            self.draw_auth(context, layout)
+            return
+
         layout.label(text="Browse HEAT Animations")
         layout.separator()
 
@@ -48,6 +53,11 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         layout.operator("heat.download_animation", icon="IMPORT", text="Download")
 
 
+    def draw_auth(self, context, layout):
+        layout.label(text="You are not logged in...")
+        layout.operator("heat.auth_login")
+        layout.operator("heat.auth_register")
+
     def draw_heat_animation_preview(self, context, layout):
         layout.label(text="Preview:")
         preview_box = layout.box()
@@ -63,6 +73,11 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
 
     @classmethod
     def register(cls):
+        bpy.types.Scene.heat_auth_is_logged_in = bpy.props.BoolProperty(
+            name = "Heat authentication state",
+            default = False
+        )
+
         bpy.types.Scene.heat_animation_results_loading = bpy.props.BoolProperty(
             name = "Heat animation results fetch state",
             default = False
@@ -78,6 +93,8 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
 
     @classmethod
     def unregister(cls):
+        del bpy.types.Scene.heat_auth_is_logged_in
+
         del bpy.types.Scene.heat_animation_results_loading
         del bpy.types.Scene.heat_animation_results_list
         del bpy.types.Scene.heat_animation_results_list_index

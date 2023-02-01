@@ -8,3 +8,5 @@ from .import_directory import *
 from .export_directory import *
 from .api_search_animations import *
 from .api_download_animation import *
+from .auth_register import *
+from .auth_login import *
