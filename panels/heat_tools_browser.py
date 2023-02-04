@@ -75,7 +75,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
     def register(cls):
         bpy.types.Scene.heat_auth_is_logged_in = bpy.props.BoolProperty(
             name = "Heat authentication state",
-            default = False
+            default = True
         )
 
         bpy.types.Scene.heat_animation_results_loading = bpy.props.BoolProperty(
@@ -94,7 +94,6 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
     @classmethod
     def unregister(cls):
         del bpy.types.Scene.heat_auth_is_logged_in
-
         del bpy.types.Scene.heat_animation_results_loading
         del bpy.types.Scene.heat_animation_results_list
         del bpy.types.Scene.heat_animation_results_list_index

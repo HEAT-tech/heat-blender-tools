@@ -10,3 +10,4 @@ from .api_search_animations import *
 from .api_download_animation import *
 from .auth_register import *
 from .auth_login import *
+from .import_t69h import *

@@ -27,7 +27,7 @@ classes = (
     APIDownloadAnimationOperator,
     AuthRegisterOperator,
     AuthLoginOperator,
-
+    ImportT69HOperator,
 
     HeatAnimationResultListItem,
     HeatAnimationResultsList,
