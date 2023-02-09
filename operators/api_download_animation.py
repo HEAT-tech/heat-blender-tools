@@ -63,11 +63,16 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
                 for key in keys:
                     fps = bpy.context.scene.render.fps
                     frame = key[0] * fps
-                    for axis, value in enumerate(key[1]):
+                    matrix = key[1]
+                    if attr == 'location':
+                        matrix = [matrix[0] * 0.001, matrix[1] * 0.001 , matrix[2] * 0.001]
+                    if attr == 'rotation_quaternion':
+                        matrix = [-matrix[3], matrix[0], matrix[2], matrix[1]]
+
+                    for axis, value in enumerate(matrix):
                         fcurve = action.fcurves.find(data_path=data_path, index=axis)
                         if fcurve == None:
                             fcurve = action.fcurves.new(data_path=data_path, index=axis)
-
 
                         fcurve.keyframe_points.insert(frame, value)
 
