@@ -4,7 +4,7 @@ from .. import services
 
 class APISearchAnimationsOperator(bpy.types.Operator):
     bl_idname = "heat.api_search_animations"
-    bl_label = "Search Heat animations"
+    bl_label = "Search Heat Animations"
 
     def execute(self, context):
         context.scene.heat_animation_results_list.clear()
