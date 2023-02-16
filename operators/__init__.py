@@ -11,3 +11,5 @@ from .api_download_animation import *
 from .auth_register import *
 from .auth_login import *
 from .import_t69h import *
+from .import_t69h_armature import *
+from .bind_with_auto_weights import *

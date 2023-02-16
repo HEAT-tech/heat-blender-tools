@@ -51,6 +51,10 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         self.draw_heat_animation_preview(context, layout)
 
         layout.operator("heat.download_animation", icon="IMPORT", text="Download")
+        layout.separator()
+
+        layout.operator("heat.import_t69h_armature")
+        layout.operator("heat.bind_t69h_with_auto_weights")
 
 
     def draw_auth(self, context, layout):

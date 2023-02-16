@@ -28,6 +28,8 @@ classes = (
     AuthRegisterOperator,
     AuthLoginOperator,
     ImportT69HOperator,
+    ImportT69HArmatureOperator,
+    BindWithAutoWeightsOperator,
 
     HeatAnimationResultListItem,
     HeatAnimationResultsList,
