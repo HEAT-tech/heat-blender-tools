@@ -33,8 +33,11 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         layout.label(text="Browse HEAT Animations")
         layout.separator()
 
-        layout.operator("heat.api_search_animations")
+        # layout.prop(context.scene, "heat_search_query", text='')
+        layout.operator("heat.api_search_animations", text='Fetch Heat Animations')
+        layout.separator()
 
+        layout.label(text="Results:")
         if context.scene.heat_animation_results_loading:
             layout.label(text="Fetching results...")
         else:

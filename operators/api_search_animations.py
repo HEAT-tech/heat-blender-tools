@@ -32,8 +32,10 @@ class APISearchAnimationsOperator(bpy.types.Operator):
 
     @classmethod
     def register(cls):
+        bpy.types.Scene.heat_search_query = bpy.props.StringProperty(default="")
         print("Registered: %s" % cls.bl_label)
 
     @classmethod
     def unregister(cls):
+        del bpy.types.Scene.heat_search_query
         print("Unregistered: %s" % cls.bl_label)
