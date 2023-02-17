@@ -38,7 +38,7 @@ class BPMMarkerGeneratorOperator(bpy.types.Operator):
 
             frame_in_measure = frame % (frames_per_measure / crotchets_denominator)
 
-            if round(frame_in_measure % frames_per_crotchet, 2) <= 0.99 :
+            if round(frame_in_measure % frames_per_crotchet, 3) <= 0.999 :
                 beat += 1
                 if beat % (crotchets_per_measure+1) == 0:
                     beat = 1
