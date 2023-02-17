@@ -53,7 +53,7 @@ class BPMService:
             resolution = nearest_crotchet_value / 4
             frame_in_measure = frame % (self.frames_per_measure / (self.crotchets_denominator * resolution))
 
-            if round(frame_in_measure % self.frames_per_crotchet, 2) <= 0.99 :
+            if round(frame_in_measure % self.frames_per_crotchet, 3) <= 0.999 :
                 grid_frames.append(frame)
 
         return grid_frames
