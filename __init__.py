@@ -30,13 +30,15 @@ classes = (
     ImportT69HOperator,
     ImportT69HArmatureOperator,
     BindWithAutoWeightsOperator,
+    BPMMarkerGeneratorOperator,
 
     HeatAnimationResultListItem,
     HeatAnimationResultsList,
 
     HeatToolsBatchPanel,
     HeatToolsPanel,
-    HeatToolsBrowserPanel
+    HeatToolsBrowserPanel,
+    HeatToolsBPMToolPanel,
 )
 
 factory_register, factory_unregister = bpy.utils.register_classes_factory(classes)

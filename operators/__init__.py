@@ -13,3 +13,4 @@ from .auth_login import *
 from .import_t69h import *
 from .import_t69h_armature import *
 from .bind_with_auto_weights import *
+from .bpm_marker_generator_operator import *
