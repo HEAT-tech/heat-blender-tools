@@ -5,7 +5,9 @@ import bpy
 class ImportT69HArmatureOperator(bpy.types.Operator):
     """Download Heat Animation"""
     bl_idname = "heat.import_t69h_armature"
-    bl_label = "Import T69H Armature"
+    bl_label = "T69H Armature"
+    bl_description = "T69H Armature for Heat"
+    bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
         this_dir = os.path.dirname(os.path.realpath(__file__))
@@ -18,10 +20,15 @@ class ImportT69HArmatureOperator(bpy.types.Operator):
         bpy.ops.object.delete()
         return {'FINISHED'}
 
+    def menu_func(self, context):
+        self.layout.operator(ImportT69HArmatureOperator.bl_idname, icon="ARMATURE_DATA")
+
     @classmethod
     def register(cls):
+        bpy.types.VIEW3D_MT_armature_add.append(cls.menu_func)
         print("Registered: %s" % cls.bl_label)
 
     @classmethod
     def unregister(cls):
+        bpy.types.VIEW3D_MT_armature_add.remove(cls.menu_func)
         print("Unregistered: %s" % cls.bl_label)
