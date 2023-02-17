@@ -5,7 +5,8 @@ import bpy
 class BindWithAutoWeightsOperator(bpy.types.Operator):
     """Download Heat Animation"""
     bl_idname = "heat.bind_t69h_with_auto_weights"
-    bl_label = "Bind to Mesh with auto weights"
+    bl_label = "Bind to Mesh"
+    bl_description = "Bind to Armature to Mesh with auto weights"
 
     def execute(self, context):
         bpy.ops.object.parent_set(type='ARMATURE_AUTO')
