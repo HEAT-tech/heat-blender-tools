@@ -9,7 +9,7 @@ def get_addon_thumbnail_path(name):
     # fpath = os.path.join(p, subpath)
     ext = name.split('.')[-1]
     next = ''
-    if not (ext == 'jpg' or ext == 'png'):  # already has ext?
+    if not (ext == 'jpg' or ext == 'png' or ext == 'mp4'):  # already has ext?
         next = '.jpg'
     subpath = f"img{os.sep}{name}{next}"
     return os.path.join(script_path, subpath)
@@ -69,7 +69,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         layout.label(text="Preview:")
         preview_box = layout.box()
         if context.scene.heat_animation_results_list_index >= 0:
-            tpath = get_addon_thumbnail_path('dummy.png')
+            tpath = get_addon_thumbnail_path('dance_dummy.mp4')
         else:
             tpath = get_addon_thumbnail_path('heat.png')
 
