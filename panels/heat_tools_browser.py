@@ -3,18 +3,6 @@ from .. import custom_types
 import os
 
 
-def get_addon_thumbnail_path(name):
-    script_path = os.path.dirname(os.path.realpath(__file__))
-    script_path = os.path.join(script_path, f"..{os.sep}assets")
-    # fpath = os.path.join(p, subpath)
-    ext = name.split('.')[-1]
-    next = ''
-    if not (ext == 'jpg' or ext == 'png' or ext == 'mp4'):  # already has ext?
-        next = '.jpg'
-    subpath = f"img{os.sep}{name}{next}"
-    return os.path.join(script_path, subpath)
-
-
 class HeatToolsBrowserPanel(bpy.types.Panel):
     bl_idname = "HEAT_TOOLS_BROWSER_PT_panel"
     bl_label = "HeatTools Browser"
@@ -65,7 +53,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         layout.operator("heat.auth_login")
         layout.operator("heat.auth_register")
 
-    def draw_heat_animation_preview(self, context, layout):
+    def draw_heat_animation_as_icon_preview(self, context, layout):
         layout.label(text="Preview:")
         preview_box = layout.box()
         if context.scene.heat_animation_results_list_index >= 0:
@@ -78,8 +66,24 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         preview_box.template_icon(icon_value=preview.icon_id, scale=10.0)
 
 
+    def draw_heat_animation_preview(self, context, layout):
+        layout.label(text="Preview:")
+        preview_box = layout.box()
+
+        layout.operator("heat.create_preview_texture_operator")
+        if context.scene.heat_preview_texture:
+            texture = context.scene.heat_preview_texture
+            preview_box.template_preview(texture.id_data)
+            preview_box.label(text=f'Frames in preview: {texture.image.frame_duration}')
+        else:
+            texture = bpy.data.textures.new(name="HeatPreview", type="IMAGE")
+            preview_box.template_preview(texture.id_data)
+
+
     @classmethod
     def register(cls):
+        bpy.utils.register_class(CreateHeatPreviewTextureOperator)
+        bpy.types.Scene.heat_preview_texture = bpy.props.PointerProperty(type=bpy.types.Texture)
         bpy.types.Scene.heat_auth_is_logged_in = bpy.props.BoolProperty(
             name = "Heat authentication state",
             default = True
@@ -100,8 +104,45 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
 
     @classmethod
     def unregister(cls):
+        bpy.utils.unregister_class(CreateHeatPreviewTextureOperator)
+        del bpy.types.Scene.heat_preview_texture
         del bpy.types.Scene.heat_auth_is_logged_in
         del bpy.types.Scene.heat_animation_results_loading
         del bpy.types.Scene.heat_animation_results_list
         del bpy.types.Scene.heat_animation_results_list_index
         print("Unregistered: %s" % cls.bl_label)
+
+
+def get_addon_thumbnail_path(name):
+    script_path = os.path.dirname(os.path.realpath(__file__))
+    script_path = os.path.join(script_path, f"..{os.sep}assets")
+    # fpath = os.path.join(p, subpath)
+    ext = name.split('.')[-1]
+    next = ''
+    if not (ext == 'jpg' or ext == 'png' or ext == 'mp4'):  # already has ext?
+        next = '.jpg'
+    subpath = f"img{os.sep}{name}{next}"
+    return os.path.join(script_path, subpath)
+
+class CreateHeatPreviewTextureOperator(bpy.types.Operator):
+    bl_idname = "heat.create_preview_texture_operator"
+    bl_label = "Create Heat Preview Texture"
+
+    def execute(self, context):
+        # Create a new texture
+        texture = bpy.data.textures.new(name="HeatPreview", type="IMAGE")
+
+        # Set the texture properties
+        image_path = get_addon_thumbnail_path('dance_dummy.mp4')
+        image = bpy.data.images.load(image_path)
+        texture.image = image
+        texture.use_mipmap = True
+        texture.use_interpolation = True
+        texture.use_alpha = True
+
+        texture.image_user.use_auto_refresh = True
+        texture.image_user.frame_current = 24
+
+        context.scene.heat_preview_texture = texture
+
+        return {'FINISHED'}

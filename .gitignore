@@ -40,7 +40,6 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-dependencies/
 
 # Installer logs
 pip-log.txt
