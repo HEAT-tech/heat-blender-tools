@@ -23,7 +23,7 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
 
         active_movement_index = context.scene.heat_animation_results_list_index
         active_movement = context.scene.heat_animation_results_list[active_movement_index]
-        download_path = os.path.join(api.download_dir, 'heat_download.zip')
+        download_path = os.path.join(api.download_dir, 'animation.heat')
 
         # download file from heat
         # dl_url = 'https://arbztjwhu7.execute-api.us-west-1.amazonaws.com/dev/v1/movements/a0026ddb-a7e1-484d-8b6c-fa3cfd6d407e/download'
