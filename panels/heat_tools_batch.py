@@ -10,6 +10,14 @@ class HeatToolsBatchPanel(bpy.types.Panel):
     bl_order = 2
     bl_options = {'DEFAULT_CLOSED'}
 
+
+    @classmethod
+    def poll(self, context):
+        this_plugin_name = __name__.split(".")[0]
+        show_heat_advanced_panels = context.preferences.addons[this_plugin_name].preferences.show_heat_advanced_panels
+        return show_heat_advanced_panels
+
+
     def draw(self, context):
         layout = self.layout
         layout.label(text="HEAT TOOLS BATCH", icon='COLORSET_01_VEC')
@@ -36,9 +44,11 @@ class HeatToolsBatchPanel(bpy.types.Panel):
         layout.prop(context.scene, 'heat_multiexporter_upload_to_heat')
         layout.operator("heat.process_batch")
 
+
     @classmethod
     def register(cls):
         print("Registered: %s" % cls.bl_label)
+
 
     @classmethod
     def unregister(cls):

@@ -10,6 +10,12 @@ class HeatToolsPanel(bpy.types.Panel):
     bl_order = 1
     bl_options = {'DEFAULT_CLOSED'}
 
+    @classmethod
+    def poll(self, context):
+        this_plugin_name = __name__.split(".")[0]
+        show_heat_advanced_panels = context.preferences.addons[this_plugin_name].preferences.show_heat_advanced_panels
+        return show_heat_advanced_panels
+
     def draw(self, context):
         layout = self.layout
         layout.label(text="HEAT TOOLS V1", icon='COLORSET_02_VEC')
