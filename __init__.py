@@ -1,8 +1,15 @@
 import bpy
+import sys
+import pkg_resources
+import subprocess
 from .panels import *
 from .operators import *
 from .custom_types import *
-from .services import AsyncLoopModalOperator, AsyncModalOperatorMixin, setup_asyncio_executor
+from .services import AsyncLoopModalOperator, setup_asyncio_executor
+
+this_dir = os.path.dirname(os.path.realpath(__file__))
+requirements = os.path.join(this_dir, 'requirements.txt')
+
 
 bl_info = {
     "name": "HeatBlender",
@@ -11,7 +18,7 @@ bl_info = {
     "blender": (2, 80, 0),
     "location": "View3D",
     "warning": "",
-    "category": "Generic"
+    "category": "3D View"
 }
 
 classes = (
@@ -44,6 +51,18 @@ classes = (
 factory_register, factory_unregister = bpy.utils.register_classes_factory(classes)
 
 
+def ensure_pip_and_install_dependencies():
+    import ensurepip
+    ensurepip.bootstrap()
+    os.environ.pop("PIP_REQ_TRACKER", None)
+
+    # Create a copy of the environment variables and modify them for the subprocess call
+    environ_copy = dict(os.environ)
+    environ_copy["PYTHONNOUSERSITE"] = "1"
+
+    subprocess.run([sys.executable, "-m", "pip", "install", "-r", requirements], check=True, env=environ_copy)
+
+
 class HeatAddonPreferences(bpy.types.AddonPreferences):
     bl_idname = __name__
 
@@ -67,6 +86,13 @@ class HeatAddonPreferences(bpy.types.AddonPreferences):
 
 
 def register():
+    try:
+        # check if required packages are installed.
+        pkg_resources.require(open(requirements,mode='r'))
+    except:
+        # install pip requirements from requirements.txt
+        ensure_pip_and_install_dependencies()
+
     bpy.utils.register_class(HeatAddonPreferences)
     factory_register()
 
