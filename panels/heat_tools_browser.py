@@ -141,7 +141,8 @@ class CreateHeatPreviewTextureOperator(bpy.types.Operator):
         texture.use_alpha = True
 
         texture.image_user.use_auto_refresh = True
-        texture.image_user.frame_current = 24
+        texture.image_user.use_cyclic = True
+        texture.image_user.frame_current = 25
 
         context.scene.heat_preview_texture = texture
 
