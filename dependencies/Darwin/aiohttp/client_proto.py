@@ -120,11 +120,11 @@ class ResponseHandler(BaseProtocol, DataQueue[Tuple[RawResponseMessage, StreamRe
         super().set_exception(exc)
 
     def set_parser(self, parser: Any, payload: Any) -> None:
-        # TODO: actual custom_types are:
+        # TODO: actual types are:
         #   parser: WebSocketReader
         #   payload: FlowControlDataQueue
         # but they are not generi enough
-        # Need an ABC for both custom_types
+        # Need an ABC for both types
         self._payload = payload
         self._payload_parser = parser
 

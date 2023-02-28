@@ -100,7 +100,7 @@ def check_bidi(label: str, check_ltr: bool = False) -> bool:
                     number_type = direction
                 else:
                     if number_type != direction:
-                        raise IDNABidiError('Can not mix numeral custom_types in a right-to-left label')
+                        raise IDNABidiError('Can not mix numeral types in a right-to-left label')
         else:
             # Bidi rule 5
             if not direction in ['L', 'EN', 'ES', 'CS', 'ET', 'ON', 'BN', 'NSM']:

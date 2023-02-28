@@ -6,6 +6,7 @@ from .panels import *
 from .operators import *
 from .custom_types import *
 from .services import AsyncLoopModalOperator, setup_asyncio_executor
+from . import  dependencies
 
 this_dir = os.path.dirname(os.path.realpath(__file__))
 requirements = os.path.join(this_dir, 'requirements.txt')
@@ -60,7 +61,10 @@ def ensure_pip_and_install_dependencies():
     environ_copy = dict(os.environ)
     environ_copy["PYTHONNOUSERSITE"] = "1"
 
-    subprocess.run([sys.executable, "-m", "pip", "install", "-r", requirements], check=True, env=environ_copy)
+    dependencies.ensure_preinstalled_deps_copied()
+    dependencies.add_installed_deps_path()
+    dependencies.add_preinstalled_deps_path()
+    dependencies.ensure_deps()
 
 
 class HeatAddonPreferences(bpy.types.AddonPreferences):

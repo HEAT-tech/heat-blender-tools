@@ -43,5 +43,5 @@ class FrozenList(MutableSequence[_T], Generic[_T]):
     def __repr__(self) -> str: ...
     def __hash__(self) -> int: ...
 
-# custom_types for C accelerators are the same
+# types for C accelerators are the same
 CFrozenList = PyFrozenList = FrozenList

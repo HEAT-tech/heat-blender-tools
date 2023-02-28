@@ -40,6 +40,8 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+dependencies/heat-tools-*
+dependencies/heat-tools-*/
 
 # Installer logs
 pip-log.txt

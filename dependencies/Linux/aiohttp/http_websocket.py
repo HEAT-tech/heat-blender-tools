@@ -49,7 +49,7 @@ ALLOWED_CLOSE_CODES: Final[Set[int]] = {int(i) for i in WSCloseCode}
 
 
 class WSMsgType(IntEnum):
-    # websocket spec custom_types
+    # websocket spec types
     CONTINUATION = 0x0
     TEXT = 0x1
     BINARY = 0x2
@@ -57,7 +57,7 @@ class WSMsgType(IntEnum):
     PONG = 0xA
     CLOSE = 0x8
 
-    # aiohttp specific custom_types
+    # aiohttp specific types
     CLOSING = 0x100
     CLOSED = 0x101
     ERROR = 0x102

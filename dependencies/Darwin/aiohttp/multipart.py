@@ -529,7 +529,7 @@ class MultipartReader:
     #: Multipart reader class, used to handle multipart/* body parts.
     #: None points to type(self)
     multipart_reader_cls = None
-    #: Body part reader class for non multipart/* content custom_types.
+    #: Body part reader class for non multipart/* content types.
     part_reader_cls = BodyPartReader
 
     def __init__(self, headers: Mapping[str, str], content: StreamReader) -> None:

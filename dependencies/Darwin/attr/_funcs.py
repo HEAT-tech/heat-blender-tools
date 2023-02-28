@@ -331,9 +331,7 @@ def assoc(inst, **changes):
         a = getattr(attrs, k, NOTHING)
         if a is NOTHING:
             raise AttrsAttributeNotFoundError(
-                "{k} is not an attrs attribute on {cl}.".format(
-                    k=k, cl=new.__class__
-                )
+                f"{k} is not an attrs attribute on {new.__class__}."
             )
         _obj_setattr(new, k, v)
     return new
@@ -361,7 +359,7 @@ def evolve(inst, **changes):
         if not a.init:
             continue
         attr_name = a.name  # To deal with private attributes.
-        init_name = attr_name if attr_name[0] != "_" else attr_name[1:]
+        init_name = a.alias
         if init_name not in changes:
             changes[init_name] = getattr(inst, attr_name)
 
@@ -372,8 +370,8 @@ def resolve_types(cls, globalns=None, localns=None, attribs=None):
     """
     Resolve any strings and forward annotations in type annotations.
 
-    This is only required if you need concrete custom_types in `Attribute`'s *type*
-    field. In other words, you don't need to resolve your custom_types if you only
+    This is only required if you need concrete types in `Attribute`'s *type*
+    field. In other words, you don't need to resolve your types if you only
     use them for static type checking.
 
     With no arguments, names will be looked up in the module in which the class
@@ -392,7 +390,7 @@ def resolve_types(cls, globalns=None, localns=None, attribs=None):
     :raise TypeError: If *cls* is not a class.
     :raise attr.exceptions.NotAnAttrsClassError: If *cls* is not an ``attrs``
         class and you didn't pass any attribs.
-    :raise NameError: If custom_types cannot be resolved because of missing variables.
+    :raise NameError: If types cannot be resolved because of missing variables.
 
     :returns: *cls* so you can use this function also as a class decorator.
         Please note that you have to apply it **after** `attrs.define`. That

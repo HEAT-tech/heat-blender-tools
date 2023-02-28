@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
 
 """
-These are Python 3.6+-only and keyword-only APIs that call `attr.s` and
-`attr.ib` with different default values.
+These are keyword-only APIs that call `attr.s` and `attr.ib` with different
+default values.
 """
 
 
@@ -26,6 +26,7 @@ def define(
     *,
     these=None,
     repr=None,
+    unsafe_hash=None,
     hash=None,
     init=None,
     slots=True,
@@ -81,6 +82,8 @@ def define(
 
     .. versionadded:: 20.1.0
     .. versionchanged:: 21.3.0 Converters are also run ``on_setattr``.
+    .. versionadded:: 22.2.0
+       *unsafe_hash* as an alias for *hash* (for :pep:`681` compliance).
     """
 
     def do_it(cls, auto_attribs):
@@ -89,6 +92,7 @@ def define(
             these=these,
             repr=repr,
             hash=hash,
+            unsafe_hash=unsafe_hash,
             init=init,
             slots=slots,
             frozen=frozen,
@@ -169,6 +173,7 @@ def field(
     eq=None,
     order=None,
     on_setattr=None,
+    alias=None,
 ):
     """
     Identical to `attr.ib`, except keyword-only and with some arguments
@@ -189,12 +194,13 @@ def field(
         eq=eq,
         order=order,
         on_setattr=on_setattr,
+        alias=alias,
     )
 
 
 def asdict(inst, *, recurse=True, filter=None, value_serializer=None):
     """
-    Same as `attr.asdict`, except that collections custom_types are always retained
+    Same as `attr.asdict`, except that collections types are always retained
     and dict is always used as *dict_factory*.
 
     .. versionadded:: 21.3.0
@@ -210,7 +216,7 @@ def asdict(inst, *, recurse=True, filter=None, value_serializer=None):
 
 def astuple(inst, *, recurse=True, filter=None):
     """
-    Same as `attr.astuple`, except that collections custom_types are always retained
+    Same as `attr.astuple`, except that collections types are always retained
     and `tuple` is always used as the *tuple_factory*.
 
     .. versionadded:: 21.3.0

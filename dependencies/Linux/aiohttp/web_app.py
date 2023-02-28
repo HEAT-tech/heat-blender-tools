@@ -69,7 +69,7 @@ if TYPE_CHECKING:  # pragma: no cover
     _MiddlewaresHandlers = Optional[Sequence[Tuple[_Middleware, bool]]]
     _Subapps = List["Application"]
 else:
-    # No type checker mode, skip custom_types
+    # No type checker mode, skip types
     _AppSignal = Signal
     _RespPrepareSignal = Signal
     _Middleware = Callable
