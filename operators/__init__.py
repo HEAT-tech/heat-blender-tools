@@ -8,8 +8,7 @@ from .import_directory import *
 from .export_directory import *
 from .api_search_animations import *
 from .api_download_animation import *
-from .auth_register import *
-from .auth_login import *
+from .auth_get_api_key import *
 from .import_t69h import *
 from .import_t69h_armature import *
 from .bind_with_auto_weights import *

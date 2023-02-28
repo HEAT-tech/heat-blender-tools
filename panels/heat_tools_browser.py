@@ -14,7 +14,9 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
 
-        if not context.scene.heat_auth_is_logged_in:
+        this_plugin_name = __name__.split(".")[0]
+        heat_user_api_key = context.preferences.addons[this_plugin_name].preferences.heat_user_api_key
+        if not heat_user_api_key:
             self.draw_auth(context, layout)
             return
 
@@ -22,7 +24,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         layout.separator()
 
         # layout.prop(context.scene, "heat_search_query", text='')
-        layout.operator("heat.api_search_animations", text='Fetch Heat Animations')
+        layout.operator("heat.api_search_animations", text='Fetch Heat Animations', icon="FILE_REFRESH")
         layout.separator()
 
         layout.label(text="Results:")
@@ -44,14 +46,23 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         layout.operator("heat.download_animation", icon="IMPORT", text="Download")
         layout.separator()
 
+        layout.label(text="Armature actions:")
         layout.operator("heat.import_t69h_armature")
         layout.operator("heat.bind_t69h_with_auto_weights")
 
 
     def draw_auth(self, context, layout):
-        layout.label(text="You are not logged in...")
-        layout.operator("heat.auth_login")
-        layout.operator("heat.auth_register")
+        layout.label(text="YOU ARE NOT LOGGED IN!")
+        layout.separator()
+        layout.label(text="Please enter your API key")
+        layout.label(text="in the addon's preferences")
+        layout.separator()
+        layout.label(text="You can find your API key")
+        layout.label(text="in your account dashboard")
+        layout.separator()
+        layout.operator("heat.auth_get_api_key")
+        layout.operator("screen.userpref_show")
+
 
     def draw_heat_animation_as_icon_preview(self, context, layout):
         layout.label(text="Preview:")
@@ -84,10 +95,6 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
     def register(cls):
         bpy.utils.register_class(CreateHeatPreviewTextureOperator)
         bpy.types.Scene.heat_preview_texture = bpy.props.PointerProperty(type=bpy.types.Texture)
-        bpy.types.Scene.heat_auth_is_logged_in = bpy.props.BoolProperty(
-            name = "Heat authentication state",
-            default = True
-        )
 
         bpy.types.Scene.heat_animation_results_loading = bpy.props.BoolProperty(
             name = "Heat animation results fetch state",
@@ -106,7 +113,6 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
     def unregister(cls):
         bpy.utils.unregister_class(CreateHeatPreviewTextureOperator)
         del bpy.types.Scene.heat_preview_texture
-        del bpy.types.Scene.heat_auth_is_logged_in
         del bpy.types.Scene.heat_animation_results_loading
         del bpy.types.Scene.heat_animation_results_list
         del bpy.types.Scene.heat_animation_results_list_index

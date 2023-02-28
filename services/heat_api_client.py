@@ -2,6 +2,7 @@ import aiohttp
 import asyncio
 import json
 import os
+import bpy
 
 
 class HeatAPIClient:
@@ -9,14 +10,22 @@ class HeatAPIClient:
     headers = {"X-API-KEY": "HEATDEV"}
     download_dir = os.getenv('TEMP') or '/tmp'
 
+    def get_user_api_key_header(self):
+        this_plugin_name = __name__.split(".")[0]
+        heat_user_api_key = bpy.context.preferences.addons[this_plugin_name].preferences.heat_user_api_key
+        return {"X-API-KEY": heat_user_api_key}
+
+
     async def get_movements(self):
-        async with aiohttp.ClientSession(headers=self.headers) as session:
+        header = self.get_user_api_key_header()
+        async with aiohttp.ClientSession(headers=header) as session:
             async with session.get(self.base_url) as resp:
                 data = await resp.json()
                 return data["movements"]
 
     async def download_file(self, url, file_path):
-        async with aiohttp.ClientSession(headers=self.headers) as session:
+        header = self.get_user_api_key_header()
+        async with aiohttp.ClientSession(headers=header) as session:
             async with session.get(url) as resp:
                 if resp.status == 200:
                     with open(file_path, 'wb') as fd:
