@@ -26,10 +26,9 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
         download_path = os.path.join(api.download_dir, 'animation.heat')
 
         # download file from heat
-        # dl_url = 'https://arbztjwhu7.execute-api.us-west-1.amazonaws.com/dev/v1/movements/a0026ddb-a7e1-484d-8b6c-fa3cfd6d407e/download'
-        # dl_url = 'https://1646-public-storage.s3.us-west-1.amazonaws.com/t69h_calib.json'
-        # await api.download_file(dl_url, download_path)
-        await api.download_file(active_movement.download_url, download_path)
+        dl_url = 'https://1646-public-storage.s3.us-west-1.amazonaws.com/Test_v4_FistPump.heat'
+        await api.download_file(dl_url, download_path)
+        # await api.download_file(active_movement.download_url, download_path)
 
         # import T69H and/or apply animation fcurves from response
         active_object = bpy.context.active_object
