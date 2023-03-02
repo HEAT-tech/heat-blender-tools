@@ -71,8 +71,17 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
 
                     for key in track['keys']:
                         t = key[0]
-                        values = Vector(key[1])
-                        values *= Vector((0.01, 0.01, 0.01))
+                        values = Vector((key[1][0], key[1][2], key[1][1]))
+                        pt = pose[track['name']].to_translation()
+                        pose_translation = Vector((pt[0], pt[2], pt[1]))
+
+                        if not armature.pose.bones[track['name']].parent:
+                           values -= armature.matrix_world.to_translation() - pose_translation
+                        else:
+                           values -= pose[track['name']].to_translation()
+
+                        values *= 0
+
                         # add keyframes
                         for i, value in enumerate(values):
                             fps = bpy.context.scene.render.fps
