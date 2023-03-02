@@ -11,13 +11,8 @@ class ImportT69HArmatureOperator(bpy.types.Operator):
 
     def execute(self, context):
         this_dir = os.path.dirname(os.path.realpath(__file__))
-        t69h_glb_filepath = os.path.join(this_dir, '../t69h_v12.glb')
+        t69h_glb_filepath = os.path.join(this_dir, '../t69h_v12_armature_only.glb')
         bpy.ops.import_scene.gltf(filepath=t69h_glb_filepath)
-
-        # remove mesh
-        bpy.ops.object.select_all(action='DESELECT')
-        bpy.data.objects['T69H'].select_set(1)
-        bpy.ops.object.delete()
         return {'FINISHED'}
 
     def menu_func(self, context):
