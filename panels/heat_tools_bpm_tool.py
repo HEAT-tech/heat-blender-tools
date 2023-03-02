@@ -5,7 +5,7 @@ from .. import custom_types
 class HeatToolsBPMToolPanel(bpy.types.Panel):
     bl_idname = "HEAT_TOOLS_BPM_Tool_PT_panel"
     bl_label = "HeatTools BPM Tool"
-    bl_space_type = 'VIEW_3D'
+    bl_space_type = 'DOPESHEET_EDITOR'
     bl_region_type = 'UI'
     bl_category = "HeatTools BPM"
     bl_order = 0

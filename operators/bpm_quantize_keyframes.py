@@ -1,5 +1,5 @@
 import bpy
-import webbrowser
+from .. import services
 
 class BPMQuantizeKeyframesOperator(bpy.types.Operator):
     """Open a URL in the default web browser"""
@@ -7,34 +7,23 @@ class BPMQuantizeKeyframesOperator(bpy.types.Operator):
     bl_label = "Quantize selected keyframes to BPM markers"
 
     def execute(self, context):
-        self.snap_keyframe_to_nearest_time_marker()
+        bpm_service = services.bpm_service.BPMService(context.scene.heat_bpm)
+        obj = bpy.context.active_object
+        action = obj.animation_data.action
+
+        for fcurve in action.fcurves :
+            for p in fcurve.keyframe_points :
+                if p.select_control_point:
+                    keyframe_frame = p.co[0]
+                    nearest_grid_frame = bpm_service.get_nearest_frame_to_grid(keyframe_frame, context.scene.heat_quantize_note)
+                    p.co[0] = nearest_grid_frame
+            fcurve.update()
         return {'FINISHED'}
 
-    def snap_keyframe_to_nearest_time_marker(self):
-        # Get the current frame and all markers in the timeline
-        current_frame = bpy.context.scene.frame_current
-        markers = bpy.context.scene.timeline_markers
-
-        # Find the nearest marker to the current frame
-        nearest_marker = None
-        nearest_distance = float("inf")
-        for marker in markers:
-            distance = abs(current_frame - marker.frame)
-            if distance < nearest_distance:
-                nearest_marker = marker
-                nearest_distance = distance
-
-        if nearest_marker is None:
-            return
-
-        # If a nearest marker was found, move the selected keyframe to the marker's frame
-        selected_keyframes = bpy.context.selected_keyframes
-        for fcurve, keyframe_index in selected_keyframes:
-            keyframe = fcurve.keyframe_points[keyframe_index]
-            keyframe.co.x = nearest_marker.frame
 
     @classmethod
     def register(cls):
+
         print("Registered: %s" % cls.bl_label)
 
     @classmethod

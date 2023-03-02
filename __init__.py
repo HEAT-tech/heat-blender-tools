@@ -57,6 +57,7 @@ classes = (
     ImportT69HArmatureOperator,
     BindWithAutoWeightsOperator,
     BPMMarkerGeneratorOperator,
+    BPMQuantizeKeyframesOperator,
 
     HeatAnimationResultListItem,
     HeatAnimationResultsList,
@@ -65,6 +66,7 @@ classes = (
     HeatToolsPanel,
     HeatToolsBrowserPanel,
     HeatToolsBPMToolPanel,
+    HeatToolsBPMQuantizerPanel,
 )
 
 
