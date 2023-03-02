@@ -41,13 +41,17 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
             )
         layout.separator()
 
-        self.draw_heat_animation_preview(context, layout)
+        self.draw_heat_animation_as_icon_preview(context, layout)
 
-        layout.operator("heat.download_animation", icon="IMPORT", text="Download")
+        if context.scene.heat_animation_id_downloading is not True:
+            layout.operator("heat.download_animation", icon="IMPORT", text="Download")
+        else:
+            dl_loading_box = layout.box()
+            dl_loading_box.label(text="Downloading...", icon="SORTTIME")
         layout.separator()
 
         layout.label(text="Armature actions:")
-        layout.operator("heat.import_t69h_armature")
+        layout.operator("heat.import_t69h_armature", text="Import New Armature")
         layout.operator("heat.bind_t69h_with_auto_weights")
 
 
@@ -68,7 +72,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         layout.label(text="Preview:")
         preview_box = layout.box()
         if context.scene.heat_animation_results_list_index >= 0:
-            tpath = get_addon_thumbnail_path('dance_dummy.mp4')
+            tpath = get_addon_thumbnail_path('dummy.png')
         else:
             tpath = get_addon_thumbnail_path('heat.png')
 
@@ -100,6 +104,10 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
             name = "Heat animation results fetch state",
             default = False
         )
+        bpy.types.Scene.heat_animation_id_downloading = bpy.props.BoolProperty(
+            name = "Heat animation downloading state",
+            default = False
+        )
         bpy.types.Scene.heat_animation_results_list = bpy.props.CollectionProperty(
             type=custom_types.HeatAnimationResultListItem
         )
@@ -114,6 +122,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         bpy.utils.unregister_class(CreateHeatPreviewTextureOperator)
         del bpy.types.Scene.heat_preview_texture
         del bpy.types.Scene.heat_animation_results_loading
+        del bpy.types.Scene.heat_animation_id_downloading
         del bpy.types.Scene.heat_animation_results_list
         del bpy.types.Scene.heat_animation_results_list_index
         print("Unregistered: %s" % cls.bl_label)

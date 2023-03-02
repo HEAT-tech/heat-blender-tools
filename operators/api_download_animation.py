@@ -26,25 +26,24 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
         download_path = os.path.join(api.download_dir, 'animation.heat')
 
         # download file from heat
-        # dl_url = 'https://1646-public-storage.s3.us-west-1.amazonaws.com/Test_v4_FistPump.heat'
-        # await api.download_file(dl_url, download_path)
+        context.scene.heat_animation_id_downloading = True
         await api.download_file(active_movement.download_url, download_path)
 
         # import T69H and/or apply animation fcurves from response
         active_object = bpy.context.active_object
-        try:
-            scene_armature = bpy.data.armatures[0]
-        except:
-            scene_armature = None
+        armature =  bpy.context.scene.objects.find('Armature')
 
-        # import T69H if no object is currently selected or no armature in scene
-        if active_object is None and scene_armature is None:
+        if active_object is not None:
+            if active_object.type == 'ARMATURE':
+                armature = active_object
+            elif active_object.parent.type == 'ARMATURE':
+                armature = active_object.parent
+        elif armature == -1:
             bpy.ops.heat.import_t69h()
-            scene_armature = bpy.data.armatures[0]
-        elif active_object is not None:
-            scene_armature = active_object
+            armature = bpy.context.scene.objects['Armature']
 
-        armature = bpy.context.scene.objects['Armature']
+        if armature.animation_data is None:
+            armature.animation_data_create()
 
         # apply animation to armature as a new action
         with gzip.open(download_path, 'rb') as f:
@@ -108,8 +107,10 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
                             curve.keyframe_points.insert(frame, q[i])
                         curve.update()
 
-
-            scene_armature.animation_data.action = action
+            try:
+                armature.animation_data.action = action
+            finally:
+                context.scene.heat_animation_id_downloading = False
 
 
     @classmethod
