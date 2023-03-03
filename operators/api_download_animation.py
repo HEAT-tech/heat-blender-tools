@@ -98,6 +98,8 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
                         # fix incorrect armature rotation when imported (the animation comes lying down by default)
                         if track['name'] == 'heat_Root':
                             quaternions[-1][1] = quaternions[-1][1] + Quaternion((0, -0.707107, 0, 0))
+                        if track['name'] == 'heat_Hips':
+                            quaternions[-1][1] *= Quaternion((1, 1, -1, -1))
 
                     # fix singularity
                     for j in range(1, len(quaternions)):

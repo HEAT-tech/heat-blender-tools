@@ -85,7 +85,7 @@ class HeatAddonPreferences(bpy.types.AddonPreferences):
     heat_user_api_key: bpy.props.StringProperty(
         name="Heat API Key",
         subtype='PASSWORD',
-        default='d7b8ed1fdb12327c3d2dcb8963297ea6'
+        default=''
     )
 
     def draw(self, context):
