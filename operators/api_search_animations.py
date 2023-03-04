@@ -28,6 +28,7 @@ class APISearchAnimationsOperator(bpy.types.Operator):
             new_movement.url = movement['url']
 
         context.scene.heat_animation_results_loading = False
+        context.area.tag_redraw()
 
 
     @classmethod
