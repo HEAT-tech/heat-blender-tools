@@ -67,6 +67,7 @@ classes = (
     HeatToolsBrowserPanel,
     HeatToolsBPMToolPanel,
     HeatToolsBPMQuantizerPanel,
+    HEAT_PT_dev_inspector_panel
 )
 
 
