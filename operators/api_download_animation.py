@@ -95,10 +95,15 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
                         else:
                             quaternions.append([t, pose[track['name']].to_quaternion().inverted() @ Quaternion((value[3], value[0], value[1], value[2]))])
 
+                        # HACKY FIXES HERE (TODO: find better solutions)
                         # fix incorrect armature rotation when imported (the animation comes lying down by default)
                         if track['name'] == 'heat_Root':
                             quaternions[-1][1] = quaternions[-1][1] + Quaternion((0, -0.707107, 0, 0))
+                        # fix inverted hips
                         if track['name'] == 'heat_Hips':
+                            quaternions[-1][1] *= Quaternion((1, 1, -1, -1))
+                        # fix inverted thumbs
+                        if track['name'] == 'heat_Thumb1_l' or track['name'] == 'heat_Thumb1_r' :
                             quaternions[-1][1] *= Quaternion((1, 1, -1, -1))
 
                     # fix singularity
