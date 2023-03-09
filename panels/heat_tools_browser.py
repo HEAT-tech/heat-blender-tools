@@ -52,6 +52,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
 
         layout.label(text="Armature actions:")
         layout.operator("heat.import_t69h_armature", text="Import New Armature")
+        layout.operator("heat.import_t69h", text="Import Armature+Mesh")
         layout.operator("heat.bind_t69h_with_auto_weights")
 
 
