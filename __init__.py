@@ -58,6 +58,7 @@ classes = (
     BindWithAutoWeightsOperator,
     BPMMarkerGeneratorOperator,
     BPMQuantizeKeyframesOperator,
+    DevWriteBoneDataToCSVOperator,
 
     HeatAnimationResultListItem,
     HeatAnimationResultsList,

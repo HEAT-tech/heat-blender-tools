@@ -37,6 +37,8 @@ class HEAT_PT_dev_inspector_panel(bpy.types.Panel):
 
             layout.separator()
 
+        layout.operator('heat.dev_write_bone_data_to_csv', icon='MESH_GRID')
+
 
 
 
