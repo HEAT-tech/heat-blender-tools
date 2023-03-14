@@ -7,11 +7,11 @@ from bpy import context
 # Deselect all objects
 # Get the armature named "T69H" if it exists
 # Deselect all objects
-
+bpy.ops.object.select_all(action='DESELECT')
 
 # Select all objects except armature named 'T69H'
 for obj in bpy.context.scene.objects:
-    if obj.type != 'ARMATURE' and not obj.name.startswith('T69H'):
+     if obj.type != 'ARMATURE' and not obj.name.startswith('T69H'):
         obj.select_set(True)
 
 # Delete selected objects
