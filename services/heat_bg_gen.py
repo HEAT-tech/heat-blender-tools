@@ -3,10 +3,11 @@ import random
 import math
 from bpy import context
 
+
 # Deselect all objects
 # Get the armature named "T69H" if it exists
 # Deselect all objects
-bpy.ops.object.select_all(action='DESELECT')
+
 
 # Select all objects except armature named 'T69H'
 for obj in bpy.context.scene.objects:
@@ -21,9 +22,9 @@ bpy.context.scene.eevee.use_bloom = True
 
 scene = context.scene
 
-num_shapes = 7
-shape_size = random.uniform(0.05, 0.4)
-shape_types = ['CUBE', 'UV_SPHERE']
+num_shapes = 50
+shape_size = random.uniform(0.01, 0.05)
+shape_types = ['CUBE', 'UV_SPHERE', 'MONKEY']
 light_types = ['POINT']
 mats = bpy.data.materials
 
@@ -84,7 +85,7 @@ def create_shapes():
         bpy.context.object.name = "Shape{}".format(i+1)
 
         if shape_type == 'UV_SPHERE':
-            random_scale = random.uniform(0.05, 0.3)
+            random_scale = random.uniform(0.05, 0.1)
             bpy.context.object.scale = (
                 random_scale, random_scale, random_scale)
         else:
@@ -146,6 +147,11 @@ bpy.context.scene.camera = camera_obj
 # set the viewport camera
 for area in bpy.context.screen.areas:
     if area.type == 'VIEW_3D':
+        space_data = area.spaces.active
+        space_data.overlay.show_extras = False
         for space in area.spaces:
             if space.type == 'VIEW_3D':
                 space.region_3d.view_perspective = 'CAMERA'
+
+
+bpy.ops.object.select_all(action='DESELECT')
