@@ -3,6 +3,8 @@ import asyncio
 import json
 import os
 import bpy
+import ssl
+import certifi
 
 
 class HeatAPIClient:
@@ -10,6 +12,7 @@ class HeatAPIClient:
     base_url = "https://partner-api.heat.tech/prod/v1/movements"
     headers = {"X-API-KEY": "HEATDEV"}
     download_dir = os.getenv('TEMP') or '/tmp'
+    sslcontext = ssl.create_default_context(cafile=certifi.where())
 
     def get_user_api_key_header(self):
         this_plugin_name = __name__.split(".")[0]
@@ -20,14 +23,14 @@ class HeatAPIClient:
     async def get_movements(self):
         header = self.get_user_api_key_header()
         async with aiohttp.ClientSession(headers=header) as session:
-            async with session.get(self.base_url) as resp:
+            async with session.get(self.base_url, ssl=self.sslcontext) as resp:
                 data = await resp.json()
                 return data["movements"]
 
     async def download_file(self, url, file_path):
         header = self.get_user_api_key_header()
         async with aiohttp.ClientSession(headers=header) as session:
-            async with session.get(url) as resp:
+            async with session.get(url, ssl=self.sslcontext) as resp:
                 if resp.status == 200:
                     with open(file_path, 'wb') as fd:
                         while True:
