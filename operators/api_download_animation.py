@@ -36,8 +36,13 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
         if active_object is not None:
             if active_object.type == 'ARMATURE':
                 armature = active_object
+            elif active_object.parent is None:
+                bpy.ops.heat.import_t69h()
+                armature = bpy.context.scene.objects['Armature']
             elif active_object.parent.type == 'ARMATURE':
                 armature = active_object.parent
+        elif armature >= 0:
+            armature = bpy.context.scene.objects['Armature']
         elif armature == -1:
             bpy.ops.heat.import_t69h()
             armature = bpy.context.scene.objects['Armature']
