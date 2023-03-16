@@ -94,6 +94,7 @@ class HeatAddonPreferences(bpy.types.AddonPreferences):
         layout = self.layout
         layout.prop(self, "heat_user_api_key")
         layout.operator("heat.auth_get_api_key")
+        layout.operator("heat.panic_reset")
         layout.prop(self, "show_heat_advanced_panels")
 
 
@@ -107,6 +108,7 @@ def register():
         # install pip requirements from requirements.txt
         ensure_pip_and_install_dependencies()
 
+    bpy.utils.register_class(HeatPanicResetOperator)
     bpy.utils.register_class(HeatAddonPreferences)
     factory_register()
 
