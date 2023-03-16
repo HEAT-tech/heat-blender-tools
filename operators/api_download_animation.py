@@ -14,8 +14,13 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
     bl_label = "Download Heat Animation"
 
     def execute(self, context):
-        async_task = asyncio.ensure_future(self.download_file(context))
-        services.ensure_async_loop()
+        try:
+            async_task = asyncio.ensure_future(self.download_file(context))
+            services.ensure_async_loop()
+        except:
+            context.scene.heat_animation_id_downloading = False
+            print('Error occurred while downloading...')
+            raise RuntimeError('Error occurred while downloading...')
         return {'FINISHED'}
 
     async def download_file(self, context):
