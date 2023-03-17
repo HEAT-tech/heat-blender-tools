@@ -111,6 +111,10 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
                         else:
                             quaternions.append([t, pose[track['name']].to_quaternion().inverted() @ Quaternion((value[3], value[0], value[1], value[2]))])
 
+                        # negate quaternion if quaternion is all negatives
+                        if all(q < 0 for q in quaternions[-1][1]):
+                            quaternions[-1][1] *= -1
+
                         # HACKY FIXES HERE (TODO: find better solutions)
                         # fix incorrect armature rotation when imported (the animation comes lying down by default)
                         if track['name'] == 'heat_Root':
