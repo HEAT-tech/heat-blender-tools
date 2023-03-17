@@ -86,9 +86,15 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
                         pose_translation = Vector((pt[0], -pt[2], pt[1]))
 
                         if not armature.pose.bones[track['name']].parent:
+                           #  root bone
                            values -= armature.matrix_world.to_translation() - pose_translation
                         else:
-                           values -= pose_translation
+                           intended_location = values - pose_translation
+                           pose_bone = armature.pose.bones[track['name']]
+                           # determine final local location based on global location
+                           taxi = intended_location - armature.location + pose_bone.bone.matrix_local.to_translation()
+                           # pray
+                           values = pose_bone.bone.matrix_local.inverted() @ taxi * Vector((1, -1, -1))
 
                         # add keyframes
                         for i, value in enumerate(values):
@@ -113,8 +119,11 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
                         if track['name'] == 'heat_Hips':
                             quaternions[-1][1] *= Quaternion((1, 1, -1, -1))
                         # fix inverted thumbs
-                        if track['name'] == 'heat_Thumb1_l' or track['name'] == 'heat_Thumb1_r' :
+                        if track['name'] == 'heat_Thumb1_r':
                             quaternions[-1][1] *= Quaternion((1, 1, -1, -1))
+                        if track['name'] == 'heat_Thumb1_l' :
+                            q = Quaternion((quaternions[-1][1][0], quaternions[-1][1][3], quaternions[-1][1][1], quaternions[-1][1][2]))
+                            quaternions[-1][1] = q * Quaternion((1, 1, 1, 1))
 
                     # fix singularity
                     for j in range(1, len(quaternions)):
