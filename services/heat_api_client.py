@@ -24,6 +24,7 @@ class HeatAPIClient:
         header = self.get_user_api_key_header()
         async with aiohttp.ClientSession(headers=header, timeout=self.timeout) as session:
             async with session.get(self.base_url, ssl=self.sslcontext) as resp:
+                assert resp.status == 200
                 data = await resp.json()
                 return data["movements"]
 

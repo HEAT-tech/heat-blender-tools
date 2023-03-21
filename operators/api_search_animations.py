@@ -18,14 +18,21 @@ class APISearchAnimationsOperator(bpy.types.Operator):
         api = services.HeatAPIClient()
         context.scene.heat_animation_results_loading = True
 
-        movements = await api.get_movements()
-        for movement in movements:
-            new_movement = context.scene.heat_animation_results_list.add()
-            new_movement.name = movement['name']
-            new_movement.id = movement['movementID']
-            new_movement.description = movement['description']
-            new_movement.download_url = movement['downloadUrl']
-            new_movement.url = movement['url']
+        try:
+            movements = await api.get_movements()
+            for movement in movements:
+                new_movement = context.scene.heat_animation_results_list.add()
+                new_movement.name = movement['name']
+                new_movement.id = movement['movementID']
+                new_movement.description = movement['description']
+                new_movement.download_url = movement['downloadUrl']
+                new_movement.url = movement['url']
+        except:
+            def error(self, context):
+                self.layout.label(text="Please make sure your HEAT API key is correct")
+                self.layout.label(text="and that you have a stable internet connection.")
+            bpy.context.window_manager.popup_menu(error, title="ERROR FETCHING ANIMATIONS", icon='ERROR')
+
 
         context.scene.heat_animation_results_loading = False
         context.area.tag_redraw()
