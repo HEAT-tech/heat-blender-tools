@@ -8,6 +8,10 @@ class HeatPanicResetOperator(bpy.types.Operator):
 
     def execute(self, context):
         context.scene.heat_animation_id_downloading = False
+
+        for screen in bpy.data.screens:
+            for area in screen.areas:
+                area.tag_redraw()
         return {'FINISHED'}
 
     @classmethod
