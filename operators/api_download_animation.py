@@ -58,7 +58,8 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
         # apply animation to armature as a new action
         with gzip.open(download_path, 'rb') as f:
             data = json.load(f)
-            action = bpy.data.actions.new("heat_action")
+            action_name = 'heat_"{0}"'.format(active_movement.name)
+            action = bpy.data.actions.new(action_name)
 
             pose = {}
             def fill_pose(pose, joint):
@@ -113,6 +114,9 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
 
                         # negate quaternion if quaternion is all negatives
                         if all(q < 0 for q in quaternions[-1][1]):
+                            quaternions[-1][1] *= -1
+                        # negate quaternion if W is negative
+                        if quaternions[-1][1][0] < 0 and track['name'] != 'heat_Root':
                             quaternions[-1][1] *= -1
 
                         # HACKY FIXES HERE (TODO: find better solutions)
