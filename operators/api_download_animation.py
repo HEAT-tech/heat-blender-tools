@@ -93,7 +93,7 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
                            intended_location = values - pose_translation
                            pose_bone = armature.pose.bones[track['name']]
                            # determine final local location based on global location
-                           taxi = intended_location - armature.location + pose_bone.bone.matrix_local.to_translation()
+                           taxi = intended_location + pose_bone.bone.matrix_local.to_translation()
                            # pray
                            values = pose_bone.bone.matrix_local.inverted() @ taxi * Vector((1, -1, -1))
 
