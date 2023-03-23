@@ -117,6 +117,11 @@ def register():
 
 
 def unregister():
+    bpy.utils.unregister_class(HeatPanicResetOperator)
     bpy.utils.unregister_class(HeatAddonPreferences)
     factory_unregister()
     bpy.utils.unregister_class(AsyncLoopModalOperator)
+
+
+if __name__ == "__main__":
+    register()
