@@ -4,6 +4,18 @@ from . import dependencies
 from . import addon_updater_ops
 
 
+bl_info = {
+    "name": "HeatBlender",
+    "author": "Alfredo Gonzalez-Martinez",
+    "description": "Heat tools for Blender",
+    "version": (0, 5, 2),
+    "blender": (2, 80, 0),
+    "location": "View3D",
+    "warning": "",
+    "category": "3D View"
+}
+
+
 def ensure_pip_and_install_dependencies():
     import ensurepip
     ensurepip.bootstrap()
@@ -30,18 +42,6 @@ except:
     from .operators import *
     from .custom_types import *
     from .services import AsyncLoopModalOperator, setup_asyncio_executor
-
-
-bl_info = {
-    "name": "HeatBlender",
-    "author": "Alfredo Gonzalez-Martinez",
-    "description": "Heat tools for Blender",
-    "version": (0, 5, 0),
-    "blender": (2, 80, 0),
-    "location": "View3D",
-    "warning": "",
-    "category": "3D View"
-}
 
 classes = (
     ZeroRootOperator,

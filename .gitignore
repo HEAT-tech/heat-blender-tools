@@ -24,6 +24,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 build/
+addon - heatblender_updater/
 develop-eggs/
 dist/
 downloads/
