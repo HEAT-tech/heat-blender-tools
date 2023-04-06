@@ -68,6 +68,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         layout.separator()
         layout.operator("heat.auth_get_api_key")
         layout.operator("screen.userpref_show")
+        # layout.operator("object.loading_indicator_operator")
 
 
     def draw_heat_animation_as_icon_preview(self, context, layout):
