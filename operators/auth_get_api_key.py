@@ -7,6 +7,6 @@ class AuthGetAPIKeyOperator(bpy.types.Operator):
     bl_label = "Get API Key"
 
     def execute(self, context):
-        url = "https://d36hx5bl1m59in.cloudfront.net/dashboard/account"
+        url = "https://app.heat.tech/dashboard/account"
         webbrowser.open(url)
         return {'FINISHED'}
