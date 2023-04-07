@@ -3,7 +3,6 @@ import pkg_resources
 from . import dependencies
 from . import addon_updater_ops
 
-
 bl_info = {
     "name": "HeatBlender",
     "author": "Alfredo Gonzalez-Martinez",
