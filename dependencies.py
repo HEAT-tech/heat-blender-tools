@@ -78,7 +78,7 @@ def ensure_deps():
     try:
       import aiohttp
       import certifi
-      from flask import Flask, request
+      # from flask import Flask, request
       from aiohttp import web, web_request
       return
     except:

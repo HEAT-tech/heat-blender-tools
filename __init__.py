@@ -34,14 +34,14 @@ try:
     from .operators import *
     from .custom_types import *
     from .services import AsyncLoopModalOperator, setup_asyncio_executor
-    from . import local_server
+    # from . import local_server
 except:
     ensure_pip_and_install_dependencies()
     from .panels import *
     from .operators import *
     from .custom_types import *
     from .services import AsyncLoopModalOperator, setup_asyncio_executor
-    from . import local_server
+    # from . import local_server
 
 classes = (
     ZeroRootOperator,
@@ -153,7 +153,7 @@ def register():
 
     setup_asyncio_executor()
     bpy.utils.register_class(AsyncLoopModalOperator)
-    local_server.start()
+    # local_server.start()
 
 
 def unregister():
