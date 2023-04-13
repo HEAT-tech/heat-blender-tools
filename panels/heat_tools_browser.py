@@ -77,7 +77,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         if context.scene.heat_animation_results_list_index >= 0:
             tpath = get_addon_thumbnail_path('dummy.png')
         else:
-            tpath = get_addon_thumbnail_path('heat.png')
+            tpath = get_addon_thumbnail_path('heat_logo.png')
 
         img = bpy.data.images.load(tpath, check_existing = True)
         preview = img.preview_ensure()
