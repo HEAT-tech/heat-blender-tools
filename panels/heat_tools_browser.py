@@ -47,7 +47,12 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
             layout.operator("heat.download_animation", icon="IMPORT", text="Download")
         else:
             dl_loading_box = layout.box()
-            dl_loading_box.label(text="Downloading...", icon="SORTTIME")
+            dl_loading_box.separator()
+            progress_bar = dl_loading_box.row()
+            progress_bar.prop(bpy.context.scene,"heat_animation_id_downloading_progress", text="Downloading...")
+            progress_lbl = dl_loading_box.row()
+            progress_lbl.active = False
+            progress_lbl.label(text="Press ESC to cancel")
         layout.separator()
 
         layout.label(text="Armature actions:")
@@ -68,8 +73,6 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         layout.separator()
         layout.operator("heat.auth_get_api_key")
         layout.operator("screen.userpref_show")
-        # layout.operator("object.loading_indicator_operator")
-
 
     def draw_heat_animation_as_icon_preview(self, context, layout):
         layout.label(text="Preview:")
@@ -111,6 +114,13 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
             name = "Heat animation downloading state",
             default = False
         )
+        bpy.types.Scene.heat_animation_id_downloading_progress = bpy.props.FloatProperty(
+            name = "Heat animation downloading state",
+            subtype="PERCENTAGE",
+            soft_min=0,
+            soft_max=100,
+            precision=0,
+        )
         bpy.types.Scene.heat_animation_results_list = bpy.props.CollectionProperty(
             type=custom_types.HeatAnimationResultListItem
         )
@@ -126,6 +136,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         del bpy.types.Scene.heat_preview_texture
         del bpy.types.Scene.heat_animation_results_loading
         del bpy.types.Scene.heat_animation_id_downloading
+        del bpy.types.Scene.heat_animation_id_downloading_progress
         del bpy.types.Scene.heat_animation_results_list
         del bpy.types.Scene.heat_animation_results_list_index
         print("Unregistered: %s" % cls.bl_label)

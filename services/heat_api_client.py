@@ -28,14 +28,20 @@ class HeatAPIClient:
                 data = await resp.json()
                 return data["movements"]
 
-    async def download_file(self, url, file_path):
+    async def download_file(self, url, file_path, caller=None):
         header = self.get_user_api_key_header()
         async with aiohttp.ClientSession(headers=header, timeout=self.timeout) as session:
             async with session.get(url, ssl=self.sslcontext) as resp:
                 if resp.status == 200:
+                    total_size = int(resp.headers.get('Content-Length', 0))
+                    downloaded_size = 0
                     with open(file_path, 'wb') as fd:
                         while True:
                             chunk = await resp.content.read(1024)
+                            downloaded_size += len(chunk)
+
+                            if caller:
+                                caller.download_progress = (downloaded_size / total_size)
                             if not chunk:
                                 break
                             fd.write(chunk)

@@ -62,7 +62,6 @@ classes = (
     BPMQuantizeKeyframesOperator,
     DevWriteBoneDataToCSVOperator,
     SwapHipsRootLocationFCurvesOperator,
-    LoadingIndicatorOperator,
 
     HeatAnimationResultListItem,
     HeatAnimationResultsList,
