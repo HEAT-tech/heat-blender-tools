@@ -7,7 +7,7 @@ bl_info = {
     "name": "HeatBlender",
     "author": "Alfredo Gonzalez-Martinez",
     "description": "Heat tools for Blender",
-    "version": (0, 5, 3),
+    "version": (0, 5, 4),
     "blender": (2, 80, 0),
     "location": "View3D",
     "warning": "",
@@ -97,7 +97,7 @@ class HeatAddonPreferences(bpy.types.AddonPreferences):
     auto_check_update: bpy.props.BoolProperty(
         name="Auto-check for Update",
         description="If enabled, auto-check for updates using an interval",
-        default=False)
+        default=True)
 
     updater_interval_months: bpy.props.IntProperty(
         name='Months',

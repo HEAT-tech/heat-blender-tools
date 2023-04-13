@@ -21,6 +21,7 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
     height = 1.76
     x_pos = 0
     y_pos = 0
+    z_pos = 0
     download_progress = 0.0
     loading_progress = 0.0
     total_progress = 0.0
@@ -45,6 +46,7 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
             if armature:
                 self.x_pos = armature.location.x
                 self.y_pos = armature.location.y
+                self.z_pos = armature.location.z
 
             # download animation
             self.task = asyncio.ensure_future(self.download_file(context))
@@ -224,17 +226,17 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
                 self.loading = False
 
     # Create Wireframe Cube Vertices and Edges
-    def create_wireframe_cube_vertices(self, width, height, x_pos=0, y_pos=0):
+    def create_wireframe_cube_vertices(self, width, height, x_pos=0, y_pos=0, z_pos=0):
         width = width/2
         vertices = [
-            (x_pos+(-width), y_pos+(-width), 0),
-            (x_pos+width, y_pos+(-width), 0),
-            (x_pos+width, y_pos+width, 0),
-            (x_pos+(-width), y_pos+width, 0),
-            (x_pos+(-width), y_pos+(-width), height),
-            (x_pos+width, y_pos+(-width), height),
-            (x_pos+width, y_pos+width, height),
-            (x_pos+(-width), y_pos+width, height)
+            (x_pos+(-width), y_pos+(-width), z_pos+0),
+            (x_pos+width, y_pos+(-width), z_pos+0),
+            (x_pos+width, y_pos+width, z_pos+0),
+            (x_pos+(-width), y_pos+width, z_pos+0),
+            (x_pos+(-width), y_pos+(-width), z_pos+height),
+            (x_pos+width, y_pos+(-width), z_pos+height),
+            (x_pos+width, y_pos+width, z_pos+height),
+            (x_pos+(-width), y_pos+width, z_pos+height)
         ]
         edges = [
             (0, 1), (1, 2), (2, 3), (3, 0),
@@ -244,40 +246,40 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
         return vertices, edges
 
     # Create Inner Cube Vertices
-    def create_inner_cube_vertices(self, width, height, x_pos=0, y_pos=0):
+    def create_inner_cube_vertices(self, width, height, x_pos=0, y_pos=0, z_pos=0):
         height = height * self.total_progress
         width = width / 2
         return (
         # bottom face
-            (x_pos+(-width), y_pos+width, 0), (x_pos+width, y_pos+width, 0), (x_pos+width, y_pos+(-width), 0),
-            (x_pos+(-width), y_pos+width, 0), (x_pos+width, y_pos+(-width), 0), (x_pos+(-width), y_pos+(-width), 0),
+            (x_pos+(-width), y_pos+width, z_pos+0), (x_pos+width, y_pos+width, z_pos+0), (x_pos+width, y_pos+(-width), z_pos+0),
+            (x_pos+(-width), y_pos+width, z_pos+0), (x_pos+width, y_pos+(-width), z_pos+0), (x_pos+(-width), y_pos+(-width), z_pos+0),
         # top face
-            (x_pos+(-width), y_pos+width, height), (x_pos+width, y_pos+width, height), (x_pos+width, y_pos+(-width), height),
-            (x_pos+(-width), y_pos+width, height), (x_pos+width, y_pos+(-width), height), (x_pos+(-width), y_pos+(-width), height),
+            (x_pos+(-width), y_pos+width, z_pos+height), (x_pos+width, y_pos+width, z_pos+height), (x_pos+width, y_pos+(-width), z_pos+height),
+            (x_pos+(-width), y_pos+width, z_pos+height), (x_pos+width, y_pos+(-width), z_pos+height), (x_pos+(-width), y_pos+(-width), z_pos+height),
         # -x face
-            (x_pos+(-width), y_pos+width, height), (x_pos+(-width), y_pos+(-width), height), (x_pos+(-width), y_pos+(-width), 0),
-            (x_pos+(-width), y_pos+width, height), (x_pos+(-width), y_pos+width, 0), (x_pos+(-width), y_pos+(-width), 0),
+            (x_pos+(-width), y_pos+width, z_pos+height), (x_pos+(-width), y_pos+(-width), z_pos+height), (x_pos+(-width), y_pos+(-width), z_pos+0),
+            (x_pos+(-width), y_pos+width, z_pos+height), (x_pos+(-width), y_pos+width, z_pos+0), (x_pos+(-width), y_pos+(-width), z_pos+0),
         # +x face
-            (x_pos+width, y_pos+width, height), (x_pos+width, y_pos+(-width), height), (x_pos+width, y_pos+(-width), 0),
-            (x_pos+width, y_pos+width, height), (x_pos+width, y_pos+width, 0), (x_pos+width, y_pos+(-width), 0),
+            (x_pos+width, y_pos+width, z_pos+height), (x_pos+width, y_pos+(-width), z_pos+height), (x_pos+width, y_pos+(-width), z_pos+0),
+            (x_pos+width, y_pos+width, z_pos+height), (x_pos+width, y_pos+width, z_pos+0), (x_pos+width, y_pos+(-width), z_pos+0),
         # -y face
-            (x_pos+width, y_pos+(-width), height), (x_pos+(-width), y_pos+(-width), height), (x_pos+(-width), y_pos+(-width), 0),
-            (x_pos+width, y_pos+(-width), height), (x_pos+width, y_pos+(-width), 0), (x_pos+(-width), y_pos+(-width), 0),
+            (x_pos+width, y_pos+(-width), z_pos+height), (x_pos+(-width), y_pos+(-width), z_pos+height), (x_pos+(-width), y_pos+(-width), z_pos+0),
+            (x_pos+width, y_pos+(-width), z_pos+height), (x_pos+width, y_pos+(-width), z_pos+0), (x_pos+(-width), y_pos+(-width), z_pos+0),
         # +y face
-            (x_pos+width, y_pos+width, height), (x_pos+(-width), y_pos+width, height), (x_pos+(-width), y_pos+width, 0),
-            (x_pos+width, y_pos+width, height), (x_pos+width, y_pos+width, 0), (x_pos+(-width), y_pos+width, 0),
+            (x_pos+width, y_pos+width, z_pos+height), (x_pos+(-width), y_pos+width, z_pos+height), (x_pos+(-width), y_pos+width, z_pos+0),
+            (x_pos+width, y_pos+width, z_pos+height), (x_pos+width, y_pos+width, z_pos+0), (x_pos+(-width), y_pos+width, z_pos+0),
         )
 
 
     # Draw function
     def draw(self, context):
         # Inner Cube
-        inner_vertices = self.create_inner_cube_vertices(self.width, self.height, self.x_pos, self.y_pos)
+        inner_vertices = self.create_inner_cube_vertices(self.width, self.height, self.x_pos, self.y_pos, self.z_pos)
         inner_shader = gpu.shader.from_builtin('3D_SMOOTH_COLOR')
         inner_batch = batch_for_shader(inner_shader, 'TRIS', {"pos": inner_vertices, "color": [(1, 0, 0, 0.5)] * len(inner_vertices)})
 
         # Wireframe Cube
-        wireframe_vertices, wireframe_edges = self.create_wireframe_cube_vertices(self.width, self.height, self.x_pos, self.y_pos)
+        wireframe_vertices, wireframe_edges = self.create_wireframe_cube_vertices(self.width, self.height, self.x_pos, self.y_pos, self.z_pos)
         wireframe_shader = gpu.shader.from_builtin('3D_UNIFORM_COLOR')
         wireframe_batch = batch_for_shader(wireframe_shader, 'LINES', {"pos": wireframe_vertices}, indices=wireframe_edges)
 
