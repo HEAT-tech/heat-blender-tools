@@ -62,6 +62,7 @@ classes = (
     BPMQuantizeKeyframesOperator,
     DevWriteBoneDataToCSVOperator,
     SwapHipsRootLocationFCurvesOperator,
+    ActionHipSyncOperator,
 
     HeatAnimationResultListItem,
     HeatAnimationResultsList,
@@ -71,7 +72,8 @@ classes = (
     HeatToolsBrowserPanel,
     HeatToolsBPMToolPanel,
     HeatToolsBPMQuantizerPanel,
-    HEAT_PT_dev_inspector_panel
+    HEAT_PT_dev_inspector_panel,
+    HeatToolsNLAToolPanel
 )
 
 
