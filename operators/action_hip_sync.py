@@ -45,7 +45,18 @@ class ActionHipSyncOperator(bpy.types.Operator):
                 loc_diff[i] = first_loc - last_start_loc
 
 
+            # swap y and z axis as the bones have those axis flipped
+            enabled_axis = [True, True, True]
+            sync_axis_vector = context.scene.heat_action_hip_sync_axis_vector
+            enabled_axis[0] = sync_axis_vector[0]
+            enabled_axis[1] = sync_axis_vector[2]
+            enabled_axis[2] = sync_axis_vector[1]
+
+            # replace keyframes
             for i in range(3):
+                if enabled_axis[i] == False:
+                    continue
+
                 loc_fcurve = last_start_action.fcurves.find(location_path, index=i)
                 loc_kp_i = 0
                 for kp in loc_fcurve.keyframe_points:

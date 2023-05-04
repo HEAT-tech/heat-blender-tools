@@ -18,15 +18,23 @@ class HeatToolsNLAToolPanel(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
 
+        layout.prop(context.scene, 'heat_action_hip_sync_axis_vector', text="Sync")
         layout.operator("heat.action_hip_sync", icon="ARMATURE_DATA")
 
 
     @classmethod
     def register(cls):
+        bpy.types.Scene.heat_action_hip_sync_axis_vector = bpy.props.BoolVectorProperty(
+            name="Action sync axis",
+            subtype='XYZ',
+            default=(True, True, True),
+            description="Vector property for heat action sync"
+        )
         print("Registered: %s" % cls.bl_label)
 
     @classmethod
     def unregister(cls):
+        del bpy.types.Scene.heat_action_hip_sync_axis_vector
         print("Unregistered: %s" % cls.bl_label)
 
 
