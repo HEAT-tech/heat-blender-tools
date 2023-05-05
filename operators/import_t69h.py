@@ -3,7 +3,7 @@ import bpy
 
 
 class ImportT69HOperator(bpy.types.Operator):
-    """Download Heat Animation"""
+    """T69H Armature & Mesh"""
     bl_idname = "heat.import_t69h"
     bl_label = "T69H Armature & Mesh"
 

@@ -3,7 +3,7 @@ from mathutils import Vector
 
 class SwapHipsRootLocationFCurvesOperator(bpy.types.Operator):
     """Swap the hip and root location fcurves so armature is animated via root"""
-    bl_label = "Convert to Root Control"
+    bl_label = "Convert to Root Control XYZ"
     bl_idname = "heat.swap_hips_root_location_fcurves"
 
     def execute(self, context):

@@ -3,10 +3,10 @@ import bpy
 
 
 class ImportT69HArmatureOperator(bpy.types.Operator):
-    """Download Heat Animation"""
+    """T69H Armature"""
     bl_idname = "heat.import_t69h_armature"
     bl_label = "T69H Armature"
-    bl_description = "T69H Armature for Heat"
+    bl_description = "T69H Armature"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
