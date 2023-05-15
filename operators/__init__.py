@@ -18,3 +18,5 @@ from .dev_write_bone_data_to_csv import *
 from .heat_panic_reset import *
 from .swap_hip_root_location_fcurves import *
 from .action_hip_sync import *
+from .armature_detector import *
+from .armature_retargeting import *
