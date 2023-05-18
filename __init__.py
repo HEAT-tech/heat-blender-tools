@@ -2,7 +2,6 @@ import bpy
 import pkg_resources
 from . import dependencies
 from . import addon_updater_ops
-from .lib import retargetting_properties
 
 bl_info = {
     "name": "HeatBlender",
@@ -67,7 +66,7 @@ classes = (
 
     # Retargetter
     BuildBoneList,
-    RSL_UL_BoneList,
+    HEAT_UL_BoneList,
     AddBoneListItem,
     ClearBoneList,
     RetargetAnimation,
@@ -174,6 +173,8 @@ def register():
 
 
     factory_register()
+    # register retargetter properties once all dependencies are satisfied
+    from .lib import retargetting_properties
     retargetting_properties.register()
 
     setup_asyncio_executor()

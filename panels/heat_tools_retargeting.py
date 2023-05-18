@@ -63,7 +63,7 @@ class HeatToolsRetargetingPanel(bpy.types.Panel):
         layout.separator()
 
         row = layout.row(align=True)
-        row.template_list("RSL_UL_BoneList", "Bone List", context.scene, "rsl_retargeting_bone_list", context.scene, "rsl_retargeting_bone_list_index", rows=1, maxrows=10)
+        row.template_list("HEAT_UL_BoneList", "Bone List", context.scene, "rsl_retargeting_bone_list", context.scene, "rsl_retargeting_bone_list_index", rows=1, maxrows=10)
 
         row = layout.row(align=True)
         row.operator(armature_retargeting.AddBoneListItem.bl_idname, text="Add Custom Entry", icon='ADD')
@@ -122,7 +122,7 @@ class BoneListItem(PropertyGroup):
 
 
 
-class RSL_UL_BoneList(UIList):
+class HEAT_UL_BoneList(UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
         armature_target = get_target_armature()
         armature_source = get_source_armature()
