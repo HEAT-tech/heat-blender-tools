@@ -41,6 +41,7 @@ bone_list['hip'] = [
     'Hips',
     'LowerBody',
     'Lower_Body',
+    'heat_Hips',
     'Mixamorig:Hips',
     'Pelvis',
     'B_C_Pelvis',
@@ -84,6 +85,11 @@ bone_list['spine'] = [  # This is a list of all spine and chest bones
     'Upper_Body_3',
     'Upper_Waist_3',
     'Waist_Upper_3',
+
+    # Heat
+    'heat_Spine',
+    'heat_Spine1',
+    'heat_Spine2',
 
     # Mixamo
     'Mixamorig:Spine',
@@ -250,6 +256,7 @@ bone_list['spine'] = [  # This is a list of all spine and chest bones
 ]
 bone_list['neck'] = [
     'Neck',
+    'heat_Neck',
     'Mixamorig:Neck',
     'Head_Neck_Lower',
     'Head_Neck_Lower_1',
@@ -275,6 +282,7 @@ bone_list['neck'] = [
 ]
 bone_list['head'] = [
     'Head',
+    'heat_Head',
     'Mixamorig:Head',
     'Head_Neck_Upper',
     'Head_Neck_Upper_1',
@@ -299,6 +307,7 @@ bone_list['leftShoulder'] = [
     '\LShoulder',
     '\LShoulderN',
     'Shoulder\L',
+    'heat_Shoulder_\L',
     'Mixamorig:\LShoulder',
     'Arm_\L_Shoulder',
     'Arm_\L_Shoulder_1',
@@ -339,6 +348,7 @@ bone_list['leftUpperArm'] = [
     '\LArmA',
     'ArmTC_\L',
     '+_\L_Elbow_Support',
+    'heat_UpperArm_\L',
     'Mixamorig:\LArm',
     'Arm_\L_Shoulder_2',
     'Bip_\L_UpperArm',
@@ -381,6 +391,7 @@ bone_list['leftLowerArm'] = [
     '\L_Elbow',
     '\LElbow',
     'Elbow_\L',
+    'heat_LowerArm_\L',
     'Mixamorig:\LForeArm',
     'Arm_\L_Elbow',
     'Bip_\L_ForeArm',
@@ -426,6 +437,7 @@ bone_list['leftHand'] = [
     'Wrist_\L',
     'Wrist2_\L',
     'HandAux2_\L',
+    'heat_Hand_\L',
     'Mixamorig:\LHand',
     'Arm_\L_Wrist',
     'Arm_\L_Wirst',
@@ -449,6 +461,7 @@ bone_list['leftHand'] = [
     'J_Te_\L'
 ]
 bone_list['leftUpLeg'] = [
+    'heat_UpLeg_\L',
     'Mixamorig:\LUpLeg',
     'Upper_Leg_\L',
     '\LUpLeg',
@@ -505,6 +518,7 @@ bone_list['leftLeg'] = [
     '\LKnee',
     'Knee_\L_001',
     'Knee_\L',
+    'heat_Leg_\L',
     'Mixamorig:\LLeg',
     'Leg_\L_Knee',
     'Bip_\L_Calf',
@@ -548,6 +562,7 @@ bone_list['leftFoot'] = [
     '\L_Ankle',
     '\L_Ankle_001',
     'Ankle_\L',
+    'heat_Foot_\L',
     'Mixamorig:\LFoot',
     'Leg_\L_Ankle',
     'Eg_\L_Ankle',
@@ -583,6 +598,7 @@ bone_list['leftToe'] = [
     'LegTip_\L',
     'LegTipEX_\L',
     'ClawTipEX_\L',
+    'heat_ToeBase_\L',
     'Mixamorig:\LToeBase',
     'Leg_\L_Toes',
     'Bip_\L_Toe0',
@@ -647,6 +663,7 @@ bone_list['leftThumbProximal'] = [
     'Arm_\L_Finger_1a',
     'J_Oya_A_\L',
     '\LFinger1Metacarpal',
+    'heat_Thumb1_\L',
     'Mixamorig:\LHandThumb1',
 ]
 bone_list['leftThumbMedial'] = [
@@ -680,6 +697,7 @@ bone_list['leftThumbMedial'] = [
     'Arm_\L_Finger_1b',
     'J_Oya_B_\L',
     '\LFinger1Proximal',
+    'heat_Thumb2_\L',
     'Mixamorig:\LHandThumb2',
 ]
 bone_list['leftThumbDistal'] = [
@@ -713,6 +731,7 @@ bone_list['leftThumbDistal'] = [
     'Arm_\L_Finger_1c',
     'J_Oya_C_\L',
     '\LFinger1Distal',
+    'heat_Thumb3_\L',
     'Mixamorig:\LHandThumb3',
 ]
 bone_list['leftIndexProximal'] = [
@@ -750,6 +769,7 @@ bone_list['leftIndexProximal'] = [
     'J_Hito_A_\L',
     '\LFinger2Proximal',
     'Mixamorig:\LHandIndex1',
+    'heat_Index1_\L',
 ]
 bone_list['leftIndexMedial'] = [
     'IndexFinger2_\L',
@@ -786,6 +806,7 @@ bone_list['leftIndexMedial'] = [
     'J_Hito_B_\L',
     '\LFinger2Medial',
     'Mixamorig:\LHandIndex2',
+    'heat_Index2_\L',
 ]
 bone_list['leftIndexDistal'] = [
     'IndexFinger3_\L',
@@ -823,6 +844,7 @@ bone_list['leftIndexDistal'] = [
     'J_Hito_C_\L',
     '\LFinger2Distal',
     'Mixamorig:\LHandIndex3',
+    'heat_Index3_\L',
 ]
 bone_list['leftMiddleProximal'] = [
     'MiddleFinger1_\L',
@@ -860,6 +882,7 @@ bone_list['leftMiddleProximal'] = [
     'J_Naka_A_\L',
     '\LFinger3Proximal',
     'Mixamorig:\LHandMiddle1',
+    'heat_Middle1_\L',
 ]
 bone_list['leftMiddleMedial'] = [
     'MiddleFinger2_\L',
@@ -896,6 +919,7 @@ bone_list['leftMiddleMedial'] = [
     'J_Naka_B_\L',
     '\LFinger3Medial',
     'Mixamorig:\LHandMiddle2',
+    'heat_Middle2_\L',
 ]
 bone_list['leftMiddleDistal'] = [
     'MiddleFinger3_\L',
@@ -932,6 +956,7 @@ bone_list['leftMiddleDistal'] = [
     'J_Naka_C_\L',
     '\LFinger3Distal',
     'Mixamorig:\LHandMiddle3',
+    'heat_Middle3_\L'
 ]
 bone_list['leftRingProximal'] = [
     'RingFinger1_\L',
@@ -969,6 +994,7 @@ bone_list['leftRingProximal'] = [
     'J_Kusu_A_\L',
     '\LFinger4Proximal',
     'Mixamorig:\LHandRing1',
+    'heat_Ring1_\L',
 ]
 bone_list['leftRingMedial'] = [
     'RingFinger2_\L',
@@ -1006,6 +1032,7 @@ bone_list['leftRingMedial'] = [
     'J_Kusu_B_\L',
     '\LFinger4Medial',
     'Mixamorig:\LHandRing2',
+    'heat_Ring2_\L',
 ]
 bone_list['leftRingDistal'] = [
     'RingFinger3_\L',
@@ -1043,6 +1070,7 @@ bone_list['leftRingDistal'] = [
     'J_Kusu_C_\L',
     '\LFinger4Distal',
     'Mixamorig:\LHandRing3',
+    'heat_Ring3_\L',
 ]
 bone_list['leftLittleProximal'] = [
     'LittleFinger1_\L',
@@ -1081,6 +1109,7 @@ bone_list['leftLittleProximal'] = [
     'J_Ko_A_\L',
     '\LFinger5Proximal',
     'Mixamorig:\LHandPinky1',
+    'heat_Pinky1_\L'
 ]
 bone_list['leftLittleMedial'] = [
     'LittleFinger2_\L',
@@ -1119,6 +1148,7 @@ bone_list['leftLittleMedial'] = [
     'J_Ko_B_\L',
     '\LFinger5Medial',
     'Mixamorig:\LHandPinky2',
+    'heat_Pinky2_\L',
 ]
 bone_list['leftLittleDistal'] = [
     'LittleFinger3_\L',
@@ -1157,4 +1187,5 @@ bone_list['leftLittleDistal'] = [
     'J_Ko_C_\L',
     '\LFinger5Distal',
     'Mixamorig:\LHandPinky3',
+    'heat_Pinky3_\L',
 ]

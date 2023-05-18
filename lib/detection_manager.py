@@ -308,6 +308,8 @@ def detect_retarget_bones() -> {str: (str, str)}:
     spines_target = []
     found_main_bones = []
 
+    load_detection_lists()
+
     # Then add all the bones to the retargeting dictionary
     for bone_name in bone_list_animated:
         if is_rokoko_animation and bone_name in ignore_rokoko_retargeting_bones:
@@ -357,7 +359,7 @@ def detect_retarget_bones() -> {str: (str, str)}:
     # Add target spines to list for later fixing
     for bone in armature_target.pose.bones:
         bone_name_standardized = standardize_bone_name(bone.name)
-        if bone_name_standardized in bone_detection_list['spine']:
+        if 'spine' in bone_detection_list and bone_name_standardized in bone_detection_list['spine']:
             spines_target.append(bone.name)
 
     # Fix spine auto detection
