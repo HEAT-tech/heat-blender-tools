@@ -8,11 +8,11 @@ from ..lib import detection_manager as detector
 from ..lib import custom_schemes_manager
 from ..custom_types import BoneListItem
 
-RETARGET_ID = '_RSL_RETARGET'
+RETARGET_ID = '_HEAT_RETARGET'
 
 
 class BuildBoneList(bpy.types.Operator):
-    bl_idname = "rsl.build_bone_list"
+    bl_idname = "heat.build_bone_list"
     bl_label = "Build Bone List"
     bl_description = "Builds the bone list from the animation and tries to automatically detect and match bones"
     bl_options = {'REGISTER', 'UNDO', 'INTERNAL'}
@@ -34,12 +34,12 @@ class BuildBoneList(bpy.types.Operator):
         retargeting_dict = detector.detect_retarget_bones()
 
         # Clear the bone retargeting list
-        context.scene.rsl_retargeting_bone_list.clear()
+        context.scene.heat_retargeting_bone_list.clear()
 
         for bone_source, bone_values in retargeting_dict.items():
             bone_target, bone_key = bone_values
 
-            bone_item = context.scene.rsl_retargeting_bone_list.add()
+            bone_item = context.scene.heat_retargeting_bone_list.add()
             bone_item.bone_name_key = bone_key
             bone_item.bone_name_source = bone_source
             bone_item.bone_name_target = bone_target
@@ -48,33 +48,33 @@ class BuildBoneList(bpy.types.Operator):
 
 
 class AddBoneListItem(bpy.types.Operator):
-    bl_idname = "rsl.add_bone_list_item"
+    bl_idname = "heat.add_bone_list_item"
     bl_label = "Add Bone List Item"
     bl_description = "Adds a customizable bone list item"
     bl_options = {'REGISTER', 'UNDO', 'INTERNAL'}
 
     def execute(self, context):
-        bone_item = context.scene.rsl_retargeting_bone_list.add()
+        bone_item = context.scene.heat_retargeting_bone_list.add()
         bone_item.is_custom = True
 
-        context.scene.rsl_retargeting_bone_list_index = len(context.scene.rsl_retargeting_bone_list) - 1
+        context.scene.heat_retargeting_bone_list_index = len(context.scene.heat_retargeting_bone_list) - 1
         return {'FINISHED'}
 
 
 class ClearBoneList(bpy.types.Operator):
-    bl_idname = "rsl.clear_bone_list"
+    bl_idname = "heat.clear_bone_list"
     bl_label = "Clear Bone List"
     bl_description = "Clears the bone list so that you can manually fill in all bones"
     bl_options = {'REGISTER', 'UNDO', 'INTERNAL'}
 
     def execute(self, context):
-        for bone_item in context.scene.rsl_retargeting_bone_list:
+        for bone_item in context.scene.heat_retargeting_bone_list:
             bone_item.bone_name_target = ''
         return {'FINISHED'}
 
 
 class RetargetAnimation(bpy.types.Operator):
-    bl_idname = "rsl.retarget_animation"
+    bl_idname = "heat.retarget_animation"
     bl_label = "Retarget Animation"
     bl_description = "Retargets the animation from the source armature to the target armature"
     bl_options = {'REGISTER', 'UNDO', 'INTERNAL'}
@@ -97,7 +97,7 @@ class RetargetAnimation(bpy.types.Operator):
 
         # Build retargeting bone list
         self.retarget_bone_list.clear()
-        for item in context.scene.rsl_retargeting_bone_list:
+        for item in context.scene.heat_retargeting_bone_list:
             if not item.bone_name_source or not item.bone_name_target \
                     or not armature_source.pose.bones.get(item.bone_name_source) \
                     or not armature_target.pose.bones.get(item.bone_name_target):
@@ -139,13 +139,13 @@ class RetargetAnimation(bpy.types.Operator):
 
         # Save and reset the current pose position of both armatures if rest position should be used
         pose_source, pose_target = {}, {}
-        if bpy.context.scene.rsl_retargeting_use_pose == 'REST':
+        if bpy.context.scene.heat_retargeting_use_pose == 'REST':
             pose_source = self.get_and_reset_pose_rotations(armature_source)
             pose_target = self.get_and_reset_pose_rotations(armature_target)
 
         # Auto scaling
         source_scale = None
-        if context.scene.rsl_retargeting_auto_scaling:
+        if context.scene.heat_retargeting_auto_scaling:
             # Clean source animation
             # TODO: This causes issues when all Hip bone data is on the armature itself
             self.clean_animation(armature_source)
@@ -451,7 +451,7 @@ class RetargetAnimation(bpy.types.Operator):
             bpy.ops.nla.bake(frame_start=start, frame_end=end, visual_keying=True, only_selected=False, use_current_action=False, bake_types={'POSE'})
 
             # Rename animation part
-            armature_target.animation_data.action.name = 'RSL_RETARGETING_' + str(frame)
+            armature_target.animation_data.action.name = 'HEAT_RETARGETING_' + str(frame)
 
             actions_all.append(armature_target.animation_data.action)
 
@@ -472,7 +472,7 @@ class RetargetAnimation(bpy.types.Operator):
                 key_counts[key] += len(fcurve.keyframe_points)
 
         # Create new action
-        action_final = bpy.data.actions.new(name='RSL_RETARGETING_FINAL')
+        action_final = bpy.data.actions.new(name='HEAT_RETARGETING_FINAL')
         action_final.use_fake_user = True
         armature_target.animation_data_create().action = action_final
 

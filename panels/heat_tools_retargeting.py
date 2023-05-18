@@ -1,6 +1,5 @@
 import bpy
 
-from ..operators import armature_retargeting, armature_detector
 from ..lib.retargeting import get_target_armature, get_source_armature
 
 from bpy.types import PropertyGroup, UIList
@@ -25,10 +24,10 @@ class HeatToolsRetargetingPanel(bpy.types.Panel):
         row.label(text='Select the armatures:')
 
         row = layout.row(align=True)
-        row.prop(context.scene, 'rsl_retargeting_armature_source', icon='ARMATURE_DATA')
+        row.prop(context.scene, 'heat_retargeting_armature_source', icon='ARMATURE_DATA')
 
         row = layout.row(align=True)
-        row.prop(context.scene, 'rsl_retargeting_armature_target', icon='ARMATURE_DATA')
+        row.prop(context.scene, 'heat_retargeting_armature_target', icon='ARMATURE_DATA')
 
         anim_exists = False
         for obj in bpy.data.objects:
@@ -40,44 +39,44 @@ class HeatToolsRetargetingPanel(bpy.types.Panel):
             row.label(text='No animated armature found!', icon='INFO')
             return
 
-        if not context.scene.rsl_retargeting_armature_source or not context.scene.rsl_retargeting_armature_target:
+        if not context.scene.heat_retargeting_armature_source or not context.scene.heat_retargeting_armature_target:
             self.draw_import_export(layout)
             return
 
-        if not context.scene.rsl_retargeting_bone_list:
+        if not context.scene.heat_retargeting_bone_list:
             row = layout.row(align=True)
             row.scale_y = 1.2
-            row.operator(armature_retargeting.BuildBoneList.bl_idname)
+            row.operator('heat.build_bone_list')
             self.draw_import_export(layout)
             return
 
         subrow = layout.row(align=True)
         row = subrow.row(align=True)
         row.scale_y = 1.2
-        row.operator(armature_retargeting.BuildBoneList.bl_idname, text='Rebuild Bone List')
+        row.operator('heat.build_bone_list', text='Rebuild Bone List')
         row = subrow.row(align=True)
         row.scale_y = 1.2
         row.alignment = 'RIGHT'
-        row.operator(armature_retargeting.ClearBoneList.bl_idname, text="", icon='X')
+        row.operator('heat.clear_bone_list', text="", icon='X')
 
         layout.separator()
 
         row = layout.row(align=True)
-        row.template_list("HEAT_UL_BoneList", "Bone List", context.scene, "rsl_retargeting_bone_list", context.scene, "rsl_retargeting_bone_list_index", rows=1, maxrows=10)
+        row.template_list("HEAT_UL_BoneList", "Bone List", context.scene, "heat_retargeting_bone_list", context.scene, "heat_retargeting_bone_list_index", rows=1, maxrows=10)
 
         row = layout.row(align=True)
-        row.operator(armature_retargeting.AddBoneListItem.bl_idname, text="Add Custom Entry", icon='ADD')
+        row.operator('heat.add_bone_list_item', text="Add Custom Entry", icon='ADD')
 
         row = layout.row(align=True)
-        row.prop(context.scene, 'rsl_retargeting_auto_scaling')
+        row.prop(context.scene, 'heat_retargeting_auto_scaling')
 
         row = layout.row(align=True)
         row.label(text='Use Pose:')
-        row.prop(context.scene, 'rsl_retargeting_use_pose', expand=True)
+        row.prop(context.scene, 'heat_retargeting_use_pose', expand=True)
 
         row = layout.row(align=True)
         row.scale_y = 1.4
-        row.operator(armature_retargeting.RetargetAnimation.bl_idname)
+        row.operator('heat.retarget_animation')
 
         self.draw_import_export(layout)
 
@@ -90,13 +89,13 @@ class HeatToolsRetargetingPanel(bpy.types.Panel):
         subrow = layout.row(align=True)
         row = subrow.row(align=True)
         row.scale_y = 0.9
-        row.operator(armature_detector.SaveCustomBonesRetargeting.bl_idname, text='Save')
-        row.operator(armature_detector.ImportCustomBones.bl_idname, text='Import')
-        row.operator(armature_detector.ExportCustomBones.bl_idname, text='Export')
+        row.operator('heat.save_custom_bones_retargeting', text='Save')
+        row.operator('heat.import_custom_schemes', text='Import')
+        row.operator('heat.export_custom_schemes', text='Export')
         row = subrow.row(align=True)
         row.scale_y = 0.9
         row.alignment = 'RIGHT'
-        row.operator(armature_detector.ClearCustomBones.bl_idname, text='', icon='X')
+        row.operator('heat.clear_custom_bones', text='', icon='X')
 
 
 class BoneListItem(PropertyGroup):

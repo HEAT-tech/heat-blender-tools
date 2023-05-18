@@ -12,12 +12,12 @@ def poll_target_armatures(self, obj):
 
 # If the retargeting armatures get changed, clear the bone list
 def clear_bone_list(self, context):
-    context.scene.rsl_retargeting_bone_list.clear()
+    context.scene.heat_retargeting_bone_list.clear()
 
 
 def get_source_armature():
-    return bpy.context.scene.rsl_retargeting_armature_source
+    return bpy.context.scene.heat_retargeting_armature_source
 
 
 def get_target_armature():
-    return bpy.context.scene.rsl_retargeting_armature_target
+    return bpy.context.scene.heat_retargeting_armature_target

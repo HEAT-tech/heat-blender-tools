@@ -16,7 +16,7 @@ def save_retargeting_to_list():
     armature_target = retargeting.get_target_armature()
     retargeting_dict = detection_manager.detect_retarget_bones()
 
-    for bone_item in bpy.context.scene.rsl_retargeting_bone_list:
+    for bone_item in bpy.context.scene.heat_retargeting_bone_list:
         if not bone_item.bone_name_source or not bone_item.bone_name_target:
             continue
 
