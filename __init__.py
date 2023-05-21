@@ -63,6 +63,7 @@ classes = (
     DevWriteBoneDataToCSVOperator,
     SwapHipsRootLocationFCurvesOperator,
     ActionHipSyncOperator,
+    BakeSelectedActionsOperator,
 
     # Retargetter
     BuildBoneList,
