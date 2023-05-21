@@ -7,7 +7,7 @@ bl_info = {
     "name": "HeatBlender",
     "author": "Alfredo Gonzalez-Martinez",
     "description": "Heat tools for Blender",
-    "version": (0, 5, 6),
+    "version": (0, 5, 7),
     "blender": (2, 80, 0),
     "location": "View3D",
     "warning": "",
@@ -63,13 +63,33 @@ classes = (
     DevWriteBoneDataToCSVOperator,
     SwapHipsRootLocationFCurvesOperator,
     ActionHipSyncOperator,
+    BakeSelectedActionsOperator,
+
+    # Retargetter
+    BuildBoneList,
+    HEAT_UL_BoneList,
+    AddBoneListItem,
+    ClearBoneList,
+    RetargetAnimation,
+    # Retargetter Detector
+    DetectFaceShapes,
+    DetectActorBones,
+    SaveCustomShapes,
+    SaveCustomBones,
+    SaveCustomBonesRetargeting,
+    ImportCustomBones,
+    ExportCustomBones,
+    ClearCustomBones,
+    ClearCustomShapes,
 
     HeatAnimationResultListItem,
     HeatAnimationResultsList,
+    BoneListItem,
 
     HeatToolsBatchPanel,
     HeatToolsPanel,
     HeatToolsBrowserPanel,
+    HeatToolsRetargetingPanel,
     HeatToolsBPMToolPanel,
     HeatToolsBPMQuantizerPanel,
     HEAT_PT_dev_inspector_panel,
@@ -151,7 +171,12 @@ def register():
     bpy.utils.register_class(HeatPanicResetOperator)
     addon_updater_ops.register(bl_info)
     bpy.utils.register_class(HeatAddonPreferences)
+
+
     factory_register()
+    # register retargetter properties once all dependencies are satisfied
+    from .lib import retargetting_properties
+    retargetting_properties.register()
 
     setup_asyncio_executor()
     bpy.utils.register_class(AsyncLoopModalOperator)
