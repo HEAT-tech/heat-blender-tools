@@ -18,8 +18,13 @@ class HeatToolsNLAToolPanel(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
 
+        layout.label(text="Bone Sync:")
         layout.prop(context.scene, 'heat_action_hip_sync_axis_vector', text="Sync")
         layout.operator("heat.action_hip_sync", icon="ARMATURE_DATA")
+        layout.separator()
+
+        layout.label(text="Action Strip Bake:")
+        layout.operator("heat.bake_actions")
 
 
     @classmethod
