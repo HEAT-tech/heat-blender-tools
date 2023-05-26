@@ -9,7 +9,7 @@ from bpy.props import StringProperty, BoolProperty
 # Retargeting panel
 class HeatToolsRetargetingPanel(bpy.types.Panel):
     bl_idname = 'VIEW3D_PT_heat_retargeting'
-    bl_label = 'Retargeting'
+    bl_label = 'Heat Retargeting'
     bl_options = {'DEFAULT_CLOSED'}
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'

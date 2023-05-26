@@ -127,7 +127,7 @@ class BakeSelectedActionsOperator(Operator):
             min_start_frame, max_end_frame = get_selected_nla_strips_range(selected_strips)
             self.frame_start = int(min_start_frame)
             self.frame_end = int(max_end_frame)
-        self.bake_types = {'POSE'} if context.mode == 'POSE' else {'OBJECT'}
+        self.bake_types = {'POSE'}
 
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
