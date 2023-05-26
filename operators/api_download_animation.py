@@ -315,7 +315,7 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
         if active_object is not None:
             if active_object.type == 'ARMATURE':
                 return active_object
-            elif active_object.parent.type == 'ARMATURE':
+            elif 'parent' in active_object and active_object.parent.type == 'ARMATURE':
                 return active_object.parent
         elif armature >= 0:
             return bpy.context.scene.objects['Armature']
