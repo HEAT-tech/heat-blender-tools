@@ -12,7 +12,7 @@ class HeatToolsNLAToolPanel(bpy.types.Panel):
     @classmethod
     def poll(cls, context):
         selected_strips = get_selected_nla_strips()
-        return len(selected_strips) == 2
+        return len(selected_strips) >= 2
 
 
     def draw(self, context):
