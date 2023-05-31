@@ -136,12 +136,14 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
 
             total_tracks = len(data['tracks'])
             current_track = 0
+            print('loading heat animation...')
             for track in data['tracks']:
                 current_track += 1
                 self.loading_progress += (current_track / total_tracks) * 0.5
 
                 if track['attr'] == 'translation':
                     data_path = 'pose.bones["{0}"].location'.format(track['name'])
+                    print(data_path)
                     translation_curves = []
 
                     for i in range(0, 3):
@@ -150,9 +152,11 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
 
                     for key in track['keys']:
                         t = key[0]
-                        values = Vector((key[1][0], -key[1][2], key[1][1]))
+                        # values = Vector((key[1][0], -key[1][2], key[1][1]))
+                        values = Vector((key[1][0], key[1][1], key[1][2]))
                         pt = pose[track['name']].to_translation()
-                        pose_translation = Vector((pt[0], -pt[2], pt[1]))
+                        # pose_translation = Vector((pt[0], -pt[2], pt[1]))
+                        pose_translation = Vector((pt[0], pt[1], pt[2]))
 
                         if not armature.pose.bones[track['name']].parent:
                            #  root bone
@@ -163,7 +167,7 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
                            # determine final local location based on global location
                            taxi = intended_location + pose_bone.bone.matrix_local.to_translation()
                            # pray
-                           values = pose_bone.bone.matrix_local.inverted() @ taxi * Vector((1, -1, -1))
+                           values = pose_bone.bone.matrix_local.inverted() @ taxi
 
                         # add keyframes
                         for i, value in enumerate(values):
@@ -172,6 +176,7 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
                             translation_curves[i].keyframe_points.insert(frame, value)
                 elif track['attr'] == 'rotation':
                     data_path = 'pose.bones["{0}"].rotation_quaternion'.format(track['name'])
+                    print(data_path)
                     quaternions = []
                     for t, value in track['keys']:
                         # manage root bone (quaternions in blender are WXYZ while heat uses XYZW)
