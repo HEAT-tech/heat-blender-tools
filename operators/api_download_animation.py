@@ -152,11 +152,15 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
 
                     for key in track['keys']:
                         t = key[0]
-                        # values = Vector((key[1][0], -key[1][2], key[1][1]))
-                        values = Vector((key[1][0], key[1][1], key[1][2]))
                         pt = pose[track['name']].to_translation()
+                        if track['name'] == 'heat_Root':
+                            values = Vector((key[1][0], key[1][2], key[1][1]))
+                            pose_translation = Vector((pt[0], pt[2], pt[1]))
+                        else:
+                            values = Vector((key[1][0], key[1][1], key[1][2]))
+                            pose_translation = Vector((pt[0], pt[1], pt[2]))
+                        # values = Vector((key[1][0], -key[1][2], key[1][1]))
                         # pose_translation = Vector((pt[0], -pt[2], pt[1]))
-                        pose_translation = Vector((pt[0], pt[1], pt[2]))
 
                         if not armature.pose.bones[track['name']].parent:
                            #  root bone
