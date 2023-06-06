@@ -19,6 +19,7 @@ class HeatToolsNLAToolPanel(bpy.types.Panel):
         layout = self.layout
 
         layout.label(text="Bone Sync:")
+        layout.prop(context.scene, 'heat_action_hip_sync_bone', text="Bone")
         layout.prop(context.scene, 'heat_action_hip_sync_axis_vector', text="Sync")
         layout.operator("heat.action_hip_sync", icon="ARMATURE_DATA")
         layout.separator()
@@ -29,6 +30,15 @@ class HeatToolsNLAToolPanel(bpy.types.Panel):
 
     @classmethod
     def register(cls):
+        bpy.types.Scene.heat_action_hip_sync_bone = bpy.props.EnumProperty(
+            name="Heat Bone",
+            description="Choose a bone",
+            items=[
+                ('heat_Root', 'Heat Root', 'Use the root bone for sync'),
+                ('heat_Hips', 'Heat Hips', 'Use the hips bone for sync')
+            ],
+            default='heat_Root'
+        )
         bpy.types.Scene.heat_action_hip_sync_axis_vector = bpy.props.BoolVectorProperty(
             name="Action sync axis",
             subtype='XYZ',
@@ -39,6 +49,7 @@ class HeatToolsNLAToolPanel(bpy.types.Panel):
 
     @classmethod
     def unregister(cls):
+        del bpy.types.Scene.heat_action_hip_sync_bone
         del bpy.types.Scene.heat_action_hip_sync_axis_vector
         print("Unregistered: %s" % cls.bl_label)
 

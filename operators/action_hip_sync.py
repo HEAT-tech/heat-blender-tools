@@ -4,8 +4,8 @@ import bpy
 class ActionHipSyncOperator(bpy.types.Operator):
     """Download Heat Animation"""
     bl_idname = "heat.action_hip_sync"
-    bl_label = "Sync Hip Positions"
-    bl_description = "Sync the hip position of two actions"
+    bl_label = "Sync Bone Positions"
+    bl_description = "Sync the bone position of two actions"
     bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
@@ -28,7 +28,7 @@ class ActionHipSyncOperator(bpy.types.Operator):
             print(f"First strip: {first_strip.name} (starts at: {first_start_frame}")
             print(f"Last strip: {last_start_strip.name} (starts at: {last_start_frame}")
 
-            bone_name = "heat_Hips"
+            bone_name = context.scene.heat_action_hip_sync_bone
             location_path = f'pose.bones["{bone_name}"].location'
             # rotation_path = f'pose.bones["{bone_name}"].rotation_quaternion'
 
