@@ -45,3 +45,7 @@ class HeatAPIClient:
                             if not chunk:
                                 break
                             fd.write(chunk)
+
+    def synchronous_download_file(self, url, file_path):
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self.download_file(url, file_path))

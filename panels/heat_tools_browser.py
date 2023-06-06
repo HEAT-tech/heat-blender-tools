@@ -1,5 +1,5 @@
 import bpy
-from .. import custom_types
+from .. import custom_types, services
 import os
 
 
@@ -78,7 +78,18 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         layout.label(text="Preview:")
         preview_box = layout.box()
         if context.scene.heat_animation_results_list_index >= 0:
-            tpath = get_addon_thumbnail_path('dummy.png')
+            active_movement_index = context.scene.heat_animation_results_list_index
+            active_movement = context.scene.heat_animation_results_list[active_movement_index]
+
+            api = services.HeatAPIClient()
+            image_name = f'animation_{active_movement.movement_id}.png'
+            download_path = os.path.join(api.download_dir, image_name)
+
+            if os.path.exists(download_path) == False:
+                api.synchronous_download_file(active_movement.preview_image_url, download_path)
+
+            # tpath = get_addon_thumbnail_path('dummy.png')
+            tpath = download_path
         else:
             tpath = get_addon_thumbnail_path('heat_logo.png')
 

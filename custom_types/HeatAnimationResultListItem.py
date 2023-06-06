@@ -28,6 +28,13 @@ class HeatAnimationResultListItem(bpy.types.PropertyGroup):
         default=""
     )
 
+    preview_image_url: bpy.props.StringProperty(
+        name="Preview Image Url",
+        description="Animation preview image Url",
+        default=""
+    )
+
+
     url: bpy.props.StringProperty(
         name="Animation Url",
         description="Animation Url",

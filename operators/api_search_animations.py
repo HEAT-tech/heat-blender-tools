@@ -23,9 +23,10 @@ class APISearchAnimationsOperator(bpy.types.Operator):
             for movement in movements:
                 new_movement = context.scene.heat_animation_results_list.add()
                 new_movement.name = movement['name']
-                new_movement.id = movement['movementID']
+                new_movement.movement_id = movement['movementID']
                 new_movement.description = movement['description']
                 new_movement.download_url = movement['downloadUrl']
+                new_movement.preview_image_url = movement['previewImageUrl']
                 new_movement.url = movement['url']
         except:
             def error(self, context):
