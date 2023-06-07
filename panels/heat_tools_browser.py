@@ -82,8 +82,9 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
             active_movement = context.scene.heat_animation_results_list[active_movement_index]
 
             api = services.HeatAPIClient()
-            image_name = f'animation_{active_movement.movement_id}.png'
+            image_name = f'zzz_heat_{active_movement.movement_id}.png'
             download_path = os.path.join(api.download_dir, image_name)
+            self.clear_heat_anim_preview_image_blocks(image_name)
 
             if os.path.exists(download_path) == False:
                 api.synchronous_download_file(active_movement.preview_image_url, download_path)
@@ -93,7 +94,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         else:
             tpath = get_addon_thumbnail_path('heat_logo.png')
 
-        img = bpy.data.images.load(tpath, check_existing = True)
+        img = bpy.data.images.load(tpath, check_existing=True)
         preview = img.preview_ensure()
         preview_box.template_icon(icon_value=preview.icon_id, scale=10.0)
 
@@ -111,6 +112,15 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
             texture = bpy.data.textures.new(name="HeatPreview", type="IMAGE")
             preview_box.template_preview(texture.id_data)
 
+
+    def clear_heat_anim_preview_image_blocks(self, except_filename=''):
+        # clear if the image name starts with "zzz_heat_" and it has no users
+        # skips image with filename in except_filename
+        for img in bpy.data.images:
+            if img.name.startswith("zzz_heat_") and img.users == 0:
+                if img.name == except_filename:
+                    continue
+                bpy.data.images.remove(img)
 
     @classmethod
     def register(cls):
