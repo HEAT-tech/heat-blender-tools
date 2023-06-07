@@ -65,6 +65,7 @@ classes = (
     SwapHipsRootLocationFCurvesOperator,
     ActionHipSyncOperator,
     BakeSelectedActionsOperator,
+    IMPORT_SCENE_OT_vrm_as_gltf,
 
     # Retargetter
     BuildBoneList,

@@ -21,3 +21,4 @@ from .action_hip_sync import *
 from .armature_detector import *
 from .armature_retargeting import *
 from .nla_action_bake import *
+from .import_vrm import *
