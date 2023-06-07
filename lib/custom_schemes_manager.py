@@ -129,11 +129,11 @@ def load_custom_lists_from_file(file_path=custom_bone_list_file):
     except json.decoder.JSONDecodeError:
         print("Custom bone list is not a valid json file!")
 
-    if custom_bone_list.get('rokoko_custom_names') is None or custom_bone_list.get('version') is None or custom_bone_list.get('bones') is None or custom_bone_list.get('shapes') is None:
+    if custom_bone_list.get('heat_custom_names') is None or custom_bone_list.get('version') is None or custom_bone_list.get('bones') is None or custom_bone_list.get('shapes') is None:
         print("Custom name list file is not a valid name list file")
         return {}, {}
 
-    custom_bone_list.pop('rokoko_custom_names')
+    custom_bone_list.pop('heat_custom_names')
     custom_bone_list.pop('version')
 
     return custom_bone_list.get('bones'), custom_bone_list.get('shapes')
@@ -141,7 +141,7 @@ def load_custom_lists_from_file(file_path=custom_bone_list_file):
 
 def clean_custom_list():
     new_custom_list = {
-        'rokoko_custom_names':  True,
+        'heat_custom_names':  True,
         'version': 1,
         'bones': {},
         'shapes': {}

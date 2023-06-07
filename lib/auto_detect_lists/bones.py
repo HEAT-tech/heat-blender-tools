@@ -1,7 +1,7 @@
 from collections import OrderedDict
 
 
-ignore_rokoko_retargeting_bones = [
+ignore_heat_retargeting_bones = [
     'newton',
     'HeadVertex',
     'Props_LeftArm',

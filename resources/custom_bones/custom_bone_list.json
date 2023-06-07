@@ -1,14 +1,11 @@
 {
-    "rokoko_custom_names": true,
+    "heat_custom_names": true,
     "version": 1,
     "bones": {
-        "leftUpperArm": [
-            "leftarm",
-            "mixamorig:leftarm"
-        ],
-        "rightUpperArm": [
-            "rightarm",
-            "mixamorig:rightarm"
+        "custom_bone_heat_headtop_end": [
+            "mixamorig:headtop_end",
+            "heat_headtop_end",
+            "mixamorig:hips"
         ]
     },
     "shapes": {}

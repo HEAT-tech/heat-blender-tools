@@ -4,7 +4,7 @@ import json
 import pathlib
 
 from . import retargeting
-from .auto_detect_lists.bones import bone_list, ignore_rokoko_retargeting_bones
+from .auto_detect_lists.bones import bone_list, ignore_heat_retargeting_bones
 from .auto_detect_lists.shapes import shape_list
 from .custom_schemes_manager import load_custom_lists_from_file
 
@@ -300,9 +300,9 @@ def detect_retarget_bones() -> {str: (str, str)}:
             bone_list_animated.append(bone_name[1])
 
     # Check if this animation is from Rokoko Studio. Ignore certain bones in that case
-    is_rokoko_animation = False
+    is_heat_animation = False
     if 'newton' in bone_list_animated and 'RightFinger1Tip' in bone_list_animated and 'HeadVertex' in bone_list_animated and 'LeftFinger2Metacarpal' in bone_list_animated:
-        is_rokoko_animation = True
+        is_heat_animation = True
 
     spines_source = []
     spines_target = []
@@ -312,7 +312,7 @@ def detect_retarget_bones() -> {str: (str, str)}:
 
     # Then add all the bones to the retargeting dictionary
     for bone_name in bone_list_animated:
-        if is_rokoko_animation and bone_name in ignore_rokoko_retargeting_bones:
+        if is_heat_animation and bone_name in ignore_heat_retargeting_bones:
             continue
 
         bone_item_source = bone_name
