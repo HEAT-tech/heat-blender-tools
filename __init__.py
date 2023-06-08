@@ -1,8 +1,10 @@
 import bpy
 import os
 import pkg_resources
+import functools
 from . import dependencies
 from . import addon_updater_ops
+from .simple_queue import SimpleQueue
 
 bl_info = {
     "name": "HeatBlender",
@@ -35,14 +37,16 @@ try:
     from .operators import *
     from .custom_types import *
     from .services import AsyncLoopModalOperator, setup_asyncio_executor
-    # from . import local_server
+    from . import local_server
+    from .queue_worker import work_queue
 except:
     ensure_pip_and_install_dependencies()
     from .panels import *
     from .operators import *
     from .custom_types import *
     from .services import AsyncLoopModalOperator, setup_asyncio_executor
-    # from . import local_server
+    from . import local_server
+    from .queue_worker import work_queue
 
 classes = (
     ZeroRootOperator,
@@ -182,7 +186,10 @@ def register():
 
     setup_asyncio_executor()
     bpy.utils.register_class(AsyncLoopModalOperator)
-    # local_server.start()
+    heat_queue = SimpleQueue('heat_queue.db')
+    heat_queue.create()
+    local_server.start()
+    bpy.app.timers.register(work_queue, first_interval=5.0)
 
 
 def unregister():
@@ -192,6 +199,7 @@ def unregister():
     factory_unregister()
     bpy.utils.unregister_class(AsyncLoopModalOperator)
     # local_server.stop()
+    bpy.app.timers.unregister(work_queue)
 
 
 if __name__ == "__main__":
