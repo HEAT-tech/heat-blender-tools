@@ -45,6 +45,7 @@ dependencies/heat-tools-*/
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
+*.log
 
 # Unit test / coverage reports
 htmlcov/
