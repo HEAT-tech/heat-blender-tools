@@ -189,7 +189,7 @@ def register():
     heat_queue = SimpleQueue('heat_queue.db')
     heat_queue.create()
     local_server.start()
-    bpy.app.timers.register(work_queue, first_interval=5.0)
+    bpy.app.timers.register(work_queue, first_interval=5.0, persistent=True)
 
 
 def unregister():
@@ -200,6 +200,8 @@ def unregister():
     bpy.utils.unregister_class(AsyncLoopModalOperator)
     # local_server.stop()
     bpy.app.timers.unregister(work_queue)
+    heat_queue = SimpleQueue('heat_queue.db')
+    heat_queue.destroy()
 
 
 if __name__ == "__main__":

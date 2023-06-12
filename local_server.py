@@ -23,6 +23,27 @@ simple_queue_filepath = path.join(os.path.dirname(__file__), 'simple_queue.py')
 simple_queue_module = import_from_filepath(simple_queue_filepath)
 SimpleQueue = simple_queue_module.SimpleQueue
 
+async def add_cors_headers(app, handler):
+    async def middleware(request):
+        if request.method == 'OPTIONS':
+            # Handle preflight request
+            response = web.Response()
+            response.headers['Access-Control-Allow-Origin'] = '*'
+            response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT'
+            response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+            response.headers['Access-Control-Allow-Credentials'] = 'true'
+            return response
+
+        # Handle regular request
+        response = await handler(request)
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
+
+        return response
+
+    return middleware
 
 app = web.Application()
 routes = web.RouteTableDef()
@@ -35,6 +56,29 @@ async def login(request):
     heat_queue = SimpleQueue('heat_queue.db')
     heat_queue.push('login', {"auth_token": auth_token})
     return web.Response(text=f'The auth_token is {auth_token}')
+
+
+@routes.post('/download-movement')
+async def downloadMovement(request):
+    heat_queue = SimpleQueue('heat_queue.db')
+    data = await request.json()
+    heat_queue.push('downloadMovement', data)
+    return web.Response(text=f'Movement ({data["movementID"]}) added to the download queue!')
+
+
+
+@routes.get('/ping')
+async def login(request):
+    heat_queue = SimpleQueue('heat_queue.db')
+    heat_queue.push('pong', {})
+    return web.Response(text=f'pong!')
+
+
+@routes.get('/add-cube')
+async def login(request):
+    heat_queue = SimpleQueue('heat_queue.db')
+    heat_queue.push('addCube', {})
+    return web.Response(text=f'done.')
 
 
 @routes.get('/shutdown')
@@ -82,4 +126,5 @@ def stop(process):
 
 if __name__ == '__main__':
     app.add_routes(routes)
+    app.middlewares.append(add_cors_headers)
     web.run_app(app, port=8690)
