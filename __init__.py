@@ -115,6 +115,12 @@ class HeatAddonPreferences(bpy.types.AddonPreferences):
         default=False
     )
 
+    start_daemon_on_startup: bpy.props.BoolProperty(
+        name="Start Daemon on Startup",
+        description="If enabled, Heat Tools can be controlled by web UI (requires restart)",
+        default=False
+    )
+
     heat_user_api_key: bpy.props.StringProperty(
         name="Heat API Key",
         subtype='PASSWORD',
@@ -160,6 +166,7 @@ class HeatAddonPreferences(bpy.types.AddonPreferences):
         layout.operator("heat.auth_get_api_key")
         layout.operator("heat.panic_reset")
         layout.prop(self, "show_heat_advanced_panels")
+        layout.prop(self, "start_daemon_on_startup")
 
         addon_updater_ops.update_settings_ui(self, context)
 
@@ -186,22 +193,33 @@ def register():
 
     setup_asyncio_executor()
     bpy.utils.register_class(AsyncLoopModalOperator)
-    heat_queue = SimpleQueue('heat_queue.db')
-    heat_queue.create()
-    local_server.start()
-    bpy.app.timers.register(work_queue, first_interval=5.0, persistent=True)
+
+    # Start Daemon
+    this_plugin_name = __name__.split(".")[0]
+    start_daemon_on_startup = bpy.context.preferences.addons[this_plugin_name].preferences.start_daemon_on_startup
+    if start_daemon_on_startup:
+        heat_queue = SimpleQueue('heat_queue.db')
+        heat_queue.create()
+        local_server.start()
+        bpy.app.timers.register(work_queue, first_interval=5.0, persistent=True)
 
 
 def unregister():
     bpy.utils.unregister_class(HeatPanicResetOperator)
     addon_updater_ops.unregister()
-    bpy.utils.unregister_class(HeatAddonPreferences)
     factory_unregister()
     bpy.utils.unregister_class(AsyncLoopModalOperator)
-    # local_server.stop()
-    bpy.app.timers.unregister(work_queue)
-    heat_queue = SimpleQueue('heat_queue.db')
-    heat_queue.destroy()
+
+    # Kill Daemon
+    this_plugin_name = __name__.split(".")[0]
+    start_daemon_on_startup = bpy.context.preferences.addons[this_plugin_name].preferences.start_daemon_on_startup
+    if start_daemon_on_startup:
+        # local_server.stop()
+        bpy.app.timers.unregister(work_queue)
+        heat_queue = SimpleQueue('heat_queue.db')
+        heat_queue.destroy()
+
+    bpy.utils.unregister_class(HeatAddonPreferences)
 
 
 if __name__ == "__main__":
