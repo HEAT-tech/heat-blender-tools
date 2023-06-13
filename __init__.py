@@ -5,6 +5,8 @@ import functools
 from . import dependencies
 from . import addon_updater_ops
 from .simple_queue import SimpleQueue
+from .dotenv import DotENV
+
 
 bl_info = {
     "name": "HeatBlender",
@@ -202,6 +204,12 @@ def register():
         heat_queue.create()
         local_server.start()
         bpy.app.timers.register(work_queue, first_interval=5.0, persistent=True)
+
+    # read .env file and set specified presets
+    env = DotENV()
+    env_heat_api_key = env.get('HEAT_API_KEY')
+    if  env_heat_api_key:
+        bpy.context.preferences.addons[this_plugin_name].preferences.heat_user_api_key = env_heat_api_key
 
 
 def unregister():
