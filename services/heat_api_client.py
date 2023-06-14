@@ -5,35 +5,50 @@ import os
 import bpy
 import ssl
 import certifi
+from .. import dotenv
 
 
 class HeatAPIClient:
-    # base_url = "https://arbztjwhu7.execute-api.us-west-1.amazonaws.com/dev/v1/movements"
-    base_url = "https://partner-api.heat.tech/prod/v1/movements"
+    base_url = "https://partner-api.heat.tech/prod/"
     download_dir = os.getenv('TEMP') or '/tmp'
     sslcontext = ssl.create_default_context(cafile=certifi.where())
     timeout = aiohttp.ClientTimeout(total=90)
 
-    def get_user_api_key_header(self):
+    def __init__(self):
+        env = dotenv.DotENV()
+        use_dev = env.get('HEAT_USE_DEV_API')
+        if  use_dev:
+            self.base_url = "https://dev-partner-api.heat.tech/dev/"
+
+    def _get_user_api_key_header(self):
         this_plugin_name = __name__.split(".")[0]
         heat_user_api_key = bpy.context.preferences.addons[this_plugin_name].preferences.heat_user_api_key
         return {"X-API-KEY": heat_user_api_key}
 
-
-    async def get_movements(self):
-        header = self.get_user_api_key_header()
+    async def _get_json(self, url):
+        header = self._get_user_api_key_header()
         async with aiohttp.ClientSession(headers=header, timeout=self.timeout) as session:
-            async with session.get(self.base_url, ssl=self.sslcontext) as resp:
+            async with session.get(url, ssl=self.sslcontext) as resp:
                 assert resp.status == 200
                 data = await resp.json()
-                return data["movements"]
+                return data
+
+    async def get_movements(self, v=1):
+        url = self.base_url + f"v{v}/movements"
+        data = await self._get_json(url)
+        return data["movements"]
+
+    async def get_movement_tags(self, v=2):
+        url = self.base_url + f"v{v}/movement-tags"
+        data = await self._get_json(url)
+        return data["tags"]
 
     async def download_file(self, url, file_path, caller=None):
-        header = self.get_user_api_key_header()
+        header = self._get_user_api_key_header()
         async with aiohttp.ClientSession(headers=header, timeout=self.timeout) as session:
             async with session.get(url, ssl=self.sslcontext) as resp:
                 if resp.status == 200:
-                    total_size = int(resp.headers.get('Content-Length', 0))
+                    total_size = int(resp.headers.get('Content-Length', '0'))
                     downloaded_size = 0
                     with open(file_path, 'wb') as fd:
                         while True:

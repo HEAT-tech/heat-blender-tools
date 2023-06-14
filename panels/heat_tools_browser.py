@@ -11,6 +11,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
     bl_category = "HeatTools"
     bl_order = 0
 
+
     def draw(self, context):
         layout = self.layout
 
@@ -23,7 +24,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         layout.label(text="Browse HEAT Animations")
         layout.separator()
 
-        # layout.prop(context.scene, "heat_search_query", text='')
+        layout.prop(context.scene, 'heat_search_query')
         layout.operator("heat.api_search_animations", text='Fetch Heat Animations', icon="FILE_REFRESH")
         layout.separator()
 
@@ -125,6 +126,12 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
     @classmethod
     def register(cls):
         bpy.utils.register_class(CreateHeatPreviewTextureOperator)
+
+        bpy.types.Scene.heat_search_query = bpy.props.StringProperty(
+            name="Search",
+            default=''
+        )
+
         bpy.types.Scene.heat_preview_texture = bpy.props.PointerProperty(type=bpy.types.Texture)
 
         bpy.types.Scene.heat_animation_results_loading = bpy.props.BoolProperty(
@@ -154,6 +161,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
     @classmethod
     def unregister(cls):
         bpy.utils.unregister_class(CreateHeatPreviewTextureOperator)
+        del bpy.types.Scene.heat_search_query
         del bpy.types.Scene.heat_preview_texture
         del bpy.types.Scene.heat_animation_results_loading
         del bpy.types.Scene.heat_animation_id_downloading
