@@ -5,6 +5,7 @@ import os
 import bpy
 import ssl
 import certifi
+from typing import Dict
 from .. import dotenv
 
 
@@ -33,17 +34,42 @@ class HeatAPIClient:
                 data = await resp.json()
                 return data
 
-    async def get_movements(self, v=1):
-        url = self.base_url + f"v{v}/movements"
+    def _to_params_string(self, params: Dict[str, str]) -> str:
+        param_string = ''
+
+        if params:
+            param_string = '?' + '&'.join([f'{key}={value}' for key, value in params.items()])
+
+        return param_string
+
+    async def get_movements(self, v=1, params: Dict[str, str] = None):
+        """
+        Fetches movements from the Heat API
+        :param v: API version number
+        :param params: Dictionary of params to filter movement results
+        :return: Dictionary of results
+        """
+        url = self.base_url + f"v{v}/movements" + self._to_params_string(params)
         data = await self._get_json(url)
         return data["movements"]
 
     async def get_movement_tags(self, v=2):
+        """
+        Fetches list of movement tags from Heat API
+        :param v: API version number
+        :return: Dictionary of results
+        """
         url = self.base_url + f"v{v}/movement-tags"
         data = await self._get_json(url)
         return data["tags"]
 
     async def download_file(self, url, file_path, caller=None):
+        """
+        Async download file
+        :param url: File url
+        :param file_path: Location to save file to
+        :param caller: Object to sync download_progress to
+        """
         header = self._get_user_api_key_header()
         async with aiohttp.ClientSession(headers=header, timeout=self.timeout) as session:
             async with session.get(url, ssl=self.sslcontext) as resp:
@@ -62,5 +88,10 @@ class HeatAPIClient:
                             fd.write(chunk)
 
     def synchronous_download_file(self, url, file_path):
+        """
+        Synchronously download a file
+        :param url: File url
+        :param file_path: Location to save file to
+        """
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.download_file(url, file_path))

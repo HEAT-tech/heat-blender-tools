@@ -93,6 +93,8 @@ classes = (
     HeatAnimationResultListItem,
     HeatAnimationResultsList,
     BoneListItem,
+    HeatTagResultListItem,
+    HeatTagResultsList,
 
     HeatToolsBatchPanel,
     HeatToolsPanel,

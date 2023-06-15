@@ -24,8 +24,23 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         layout.label(text="Browse HEAT Animations")
         layout.separator()
 
-        layout.prop(context.scene, 'heat_search_query')
-        layout.operator("heat.api_search_animations", text='Fetch Heat Animations', icon="FILE_REFRESH")
+        box = layout.box()
+        box.row(align=True).operator("heat.api_search_animations", text='Fetch Heat Animations', icon="FILE_REFRESH")
+        # Expandable Advanced Search menu
+        box.row(align=True).prop(context.scene, "heat_advanced_search", text="Advanced Search", icon="TRIA_DOWN" if context.scene.heat_advanced_search else "TRIA_RIGHT", emboss=False, icon_only=True, toggle=True)
+        if context.scene.heat_advanced_search:
+            box.row(align=True).prop(context.scene, 'heat_search_query')
+            box.row(align=True).label(text="Tags:")
+            box.row(align=True).template_list(
+                "HeatTagResultsList",
+                "Heat_Tag_Results_List",
+                context.scene,
+                "heat_tag_results_list",
+                context.scene,
+                "heat_tag_results_list_index"
+            )
+            box.row(align=True).label(text="Movement Type:")
+            box.row(align=True).prop(context.scene, "heat_motion_types")
         layout.separator()
 
         layout.label(text="Results:")
@@ -127,9 +142,26 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
     def register(cls):
         bpy.utils.register_class(CreateHeatPreviewTextureOperator)
 
+        bpy.types.Scene.heat_advanced_search = bpy.props.BoolProperty(default=False)
         bpy.types.Scene.heat_search_query = bpy.props.StringProperty(
             name="Search",
             default=''
+        )
+        bpy.types.Scene.heat_tag_results_list = bpy.props.CollectionProperty(
+            type=custom_types.HeatTagResultListItem
+        )
+        bpy.types.Scene.heat_tag_results_list_index = bpy.props.IntProperty(
+            name = "Index for Heat tag results",
+            default = -1
+        )
+        bpy.types.Scene.heat_motion_types = bpy.props.EnumProperty(
+            name="Motion Types",
+            items=[
+                ('hip', "Hip", "Hip Motion"),
+                ('root', "Root", "Root Motion"),
+                ('in_place', "In Place", "In Place Motion"),
+            ],
+            options={'ENUM_FLAG'}
         )
 
         bpy.types.Scene.heat_preview_texture = bpy.props.PointerProperty(type=bpy.types.Texture)
@@ -161,7 +193,9 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
     @classmethod
     def unregister(cls):
         bpy.utils.unregister_class(CreateHeatPreviewTextureOperator)
+        del bpy.types.Scene.heat_advanced_search
         del bpy.types.Scene.heat_search_query
+        del bpy.types.Scene.heat_motion_types
         del bpy.types.Scene.heat_preview_texture
         del bpy.types.Scene.heat_animation_results_loading
         del bpy.types.Scene.heat_animation_id_downloading
