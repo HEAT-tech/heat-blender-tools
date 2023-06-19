@@ -70,13 +70,6 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
             progress_lbl = dl_loading_box.row()
             progress_lbl.active = False
             progress_lbl.label(text="Press ESC to cancel")
-        layout.separator()
-
-        layout.label(text="Armature actions:")
-        layout.operator("heat.import_t69h_armature", text="Import New Armature")
-        layout.operator("heat.import_t69h", text="Import Armature+Mesh")
-        layout.operator("heat.bind_t69h_with_auto_weights")
-        layout.operator("heat.swap_hips_root_location_fcurves")
 
 
     def draw_auth(self, context, layout):

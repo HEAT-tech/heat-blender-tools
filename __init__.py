@@ -101,6 +101,7 @@ classes = (
     HeatToolsBatchPanel,
     HeatToolsPanel,
     HeatToolsBrowserPanel,
+    HeatToolsBrowserArmatureActionsPanel,
     HeatToolsRetargetingPanel,
     HeatToolsBPMToolPanel,
     HeatToolsBPMQuantizerPanel,
