@@ -61,6 +61,7 @@ classes = (
     ExportOperator,
     APISearchAnimationsOperator,
     APIDownloadAnimationOperator,
+    APIFetchTagsOperator,
     AuthGetAPIKeyOperator,
     ImportT69HOperator,
     ImportT69HArmatureOperator,
@@ -90,6 +91,7 @@ classes = (
     ClearCustomBones,
     ClearCustomShapes,
 
+    HeatAnimationResultListTagItem,
     HeatAnimationResultListItem,
     HeatAnimationResultsList,
     BoneListItem,

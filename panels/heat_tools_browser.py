@@ -45,7 +45,8 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
 
         layout.label(text="Results:")
         if context.scene.heat_animation_results_loading:
-            layout.label(text="Fetching results...")
+            results_box = layout.box()
+            results_box.row(align=True).label(text="Fetching results...", icon="FILE_REFRESH")
         else:
             layout.template_list(
                 "HeatAnimationResultsList",
@@ -142,7 +143,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
     def register(cls):
         bpy.utils.register_class(CreateHeatPreviewTextureOperator)
 
-        bpy.types.Scene.heat_advanced_search = bpy.props.BoolProperty(default=False)
+        bpy.types.Scene.heat_advanced_search = bpy.props.BoolProperty(default=False, update=handle_advanced_search_dropdown_change)
         bpy.types.Scene.heat_search_query = bpy.props.StringProperty(
             name="Search",
             default=''
@@ -239,3 +240,7 @@ class CreateHeatPreviewTextureOperator(bpy.types.Operator):
         context.scene.heat_preview_texture = texture
 
         return {'FINISHED'}
+
+def handle_advanced_search_dropdown_change(self, context):
+    if context.scene.heat_advanced_search:
+        bpy.ops.heat.api_fetch_tags()

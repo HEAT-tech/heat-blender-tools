@@ -6,4 +6,5 @@ class HeatTagResultsList(bpy.types.UIList):
     def draw_item(self, context, layout, data, item, icon, active_data,
                   active_propname, index):
         # We could write some code to decide which icon to use here...
+        layout.prop(item, 'selected', text='')
         layout.label(text=item.name)

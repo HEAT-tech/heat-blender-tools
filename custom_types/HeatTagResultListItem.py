@@ -27,3 +27,5 @@ class HeatTagResultListItem(bpy.types.PropertyGroup):
         default="https://heat.tag.tech"
     )
 
+    selected: bpy.props.BoolProperty(default=False)
+
