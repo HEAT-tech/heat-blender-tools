@@ -37,31 +37,30 @@ class APISearchAnimationsOperator(bpy.types.Operator):
         if len(selected_tags):
             params['tags'] = ','.join([str(tag.id) for tag in selected_tags])
 
-        # try:
-        movements = await api.get_movements(2, params)
-        for movement in movements:
-            new_movement = context.scene.heat_animation_results_list.add()
-            new_movement.name = movement['name']
-            new_movement.movement_id = movement['id']
-            new_movement.description = movement['description']
-            new_movement.download_url = movement['downloadUrl']
-            new_movement.preview_image_url = movement['previewImageUrl']
-            new_movement.url = movement['url']
+        try:
+            movements = await api.get_movements(2, params)
+            for movement in movements:
+                new_movement = context.scene.heat_animation_results_list.add()
+                new_movement.name = movement['name']
+                new_movement.movement_id = movement['id']
+                new_movement.description = movement['description']
+                new_movement.download_url = movement['downloadUrl']
+                new_movement.preview_image_url = movement['previewImageUrl']
+                new_movement.url = movement['url']
 
-            if not movement['tags']:
-                continue
-            for tag in movement['tags']:
-                tag_item = new_movement.tags.add()
-                tag_item['id'] = tag['id']
-                tag_item['url'] = tag['url']
-                tag_item['parent_id'] = tag['parentID'] or -1
-                tag_item['name'] = tag['name']
-
-        # except:
-        #     def error(self, context):
-        #         self.layout.label(text="Please make sure your HEAT API key is correct")
-        #         self.layout.label(text="and that you have a stable internet connection.")
-        #     bpy.context.window_manager.popup_menu(error, title="ERROR FETCHING ANIMATIONS", icon='ERROR')
+                if not movement['tags']:
+                    continue
+                for tag in movement['tags']:
+                    tag_item = new_movement.tags.add()
+                    tag_item['id'] = tag['id']
+                    tag_item['url'] = tag['url']
+                    tag_item['parent_id'] = tag['parentID'] or -1
+                    tag_item['name'] = tag['name']
+        except:
+            def error(self, context):
+                self.layout.label(text="Please make sure your HEAT API key is correct")
+                self.layout.label(text="and that you have a stable internet connection.")
+            bpy.context.window_manager.popup_menu(error, title="ERROR FETCHING ANIMATIONS", icon='ERROR')
 
 
         context.scene.heat_animation_results_loading = False
