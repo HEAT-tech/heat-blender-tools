@@ -213,7 +213,7 @@ def register():
     # read .env file and set specified presets
     env = DotENV()
     env_heat_api_key = env.get('HEAT_API_KEY')
-    if  env_heat_api_key:
+    if env_heat_api_key:
         bpy.context.preferences.addons[this_plugin_name].preferences.heat_user_api_key = env_heat_api_key
 
 
