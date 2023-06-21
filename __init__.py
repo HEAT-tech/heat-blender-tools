@@ -227,10 +227,13 @@ def unregister():
     this_plugin_name = __name__.split(".")[0]
     start_daemon_on_startup = bpy.context.preferences.addons[this_plugin_name].preferences.start_daemon_on_startup
     if start_daemon_on_startup:
-        # local_server.stop()
-        bpy.app.timers.unregister(work_queue)
-        heat_queue = SimpleQueue('heat_queue.db')
-        heat_queue.destroy()
+        try:
+            # local_server.stop()
+            bpy.app.timers.unregister(work_queue)
+            heat_queue = SimpleQueue('heat_queue.db')
+            heat_queue.destroy()
+        except:
+            pass
 
     bpy.utils.unregister_class(HeatAddonPreferences)
 
