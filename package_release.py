@@ -13,7 +13,7 @@ if not os.path.exists(os.path.dirname(output_zip)):
     os.makedirs(os.path.dirname(output_zip))
 
 # List of files and subdirectories to be excluded from the zip file
-exclude_list = ['.git', '_git_assets', 'addon - heatblender_updater', 'build', 'dependencies', '__pycache__', '.gitignore']
+exclude_list = ['.git', '.env', '_git_assets', 'local_server.log', 'addon - heatblender_updater', 'build', 'Readme.MD', 'dependencies', '__pycache__', '.gitignore']
 print(f'excluding...{exclude_list}')
 
 with zipfile.ZipFile(output_zip, 'w', zipfile.ZIP_DEFLATED) as zip:
