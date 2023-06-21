@@ -28,7 +28,12 @@ class DotENV():
 
         return env_vars
 
-    def get(self, key):
+    def get(self, key, default='') -> str:
         if self.env_vars == None:
-            return None
-        return self.env_vars.get(key)
+            return default
+        return self.env_vars.get(key) or default
+
+    def is_true(self, key: str):
+        if self.get(key).lower == 'true':
+            return True
+        return False
