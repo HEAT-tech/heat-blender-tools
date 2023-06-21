@@ -55,6 +55,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
                 context.scene,
                 "heat_animation_results_list_index"
             )
+            self.draw_fetch_more(context, layout)
         layout.separator()
 
         self.draw_heat_animation_as_icon_preview(context, layout)
@@ -131,6 +132,13 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
                     continue
                 bpy.data.images.remove(img)
 
+    def draw_fetch_more(self, context, layout):
+        if context.scene.heat_animation_fetching_next_results_page:
+            layout.box().row(align=True).label(text="Fetching results...", icon="FILE_REFRESH")
+            return
+        if context.scene.heat_animation_next_results_page > 1:
+            layout.operator('heat.api_fetch_more_animations', icon="FORWARD", text="Fetch More...")
+
     @classmethod
     def register(cls):
         bpy.utils.register_class(CreateHeatPreviewTextureOperator)
@@ -138,7 +146,8 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         bpy.types.Scene.heat_advanced_search = bpy.props.BoolProperty(default=False, update=handle_advanced_search_dropdown_change)
         bpy.types.Scene.heat_search_query = bpy.props.StringProperty(
             name="Search",
-            default=''
+            default='',
+            update=handle_search_query_change
         )
         bpy.types.Scene.heat_tag_results_list = bpy.props.CollectionProperty(
             type=custom_types.HeatTagResultListItem
@@ -181,6 +190,14 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
             name = "Index for Heat animation results",
             default = -1
         )
+        bpy.types.Scene.heat_animation_next_results_page = bpy.props.IntProperty(
+            name = "Next page index for Heat animation results",
+            default = -1
+        )
+        bpy.types.Scene.heat_animation_fetching_next_results_page = bpy.props.BoolProperty(
+            name = "Heat animation results fetching state",
+            default = False
+        )
         print("Registered: %s" % cls.bl_label)
 
     @classmethod
@@ -195,6 +212,8 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         del bpy.types.Scene.heat_animation_id_downloading_progress
         del bpy.types.Scene.heat_animation_results_list
         del bpy.types.Scene.heat_animation_results_list_index
+        del bpy.types.Scene.heat_animation_next_results_page
+        del bpy.types.Scene.heat_animation_fetching_next_results_page
         print("Unregistered: %s" % cls.bl_label)
 
 
@@ -236,3 +255,7 @@ class CreateHeatPreviewTextureOperator(bpy.types.Operator):
 def handle_advanced_search_dropdown_change(self, context):
     if context.scene.heat_advanced_search:
         bpy.ops.heat.api_fetch_tags()
+
+def handle_search_query_change(self, context):
+    # print('wtf?')
+    bpy.ops.heat.api_search_animations()

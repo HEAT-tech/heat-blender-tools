@@ -23,3 +23,4 @@ from .armature_retargeting import *
 from .nla_action_bake import *
 from .import_vrm import *
 from .api_fetch_tags import *
+from .api_fetch_more_animations import *

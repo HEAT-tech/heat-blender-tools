@@ -51,6 +51,10 @@ class HeatAPIClient:
         """
         url = self.base_url + f"v{v}/movements" + self._to_params_string(params)
         data = await self._get_json(url)
+        if data['nextPage']:
+            bpy.context.scene.heat_animation_next_results_page = int(data['nextPage'])
+        else:
+            bpy.context.scene.heat_animation_next_results_page = -1
         return data["movements"]
 
     async def get_movement_tags(self, v=2):
@@ -95,3 +99,41 @@ class HeatAPIClient:
         """
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.download_file(url, file_path))
+
+
+def build_params_list_from_scene_params() -> Dict[str, str]:
+    params = {}
+    context = bpy.context
+
+    if context.scene.heat_search_query != '':
+        params['q'] = context.scene.heat_search_query
+    motion_type_set = context.scene.heat_motion_types
+    motion_types = ','.join([str(m_type) for m_type in motion_type_set])
+    if motion_types!= '':
+        params['motionTypes'] = motion_types
+    tags = bpy.context.scene.heat_tag_results_list
+    selected_tags = [tag for tag in tags if tag.selected]
+    if len(selected_tags):
+        params['tags'] = ','.join([str(tag.id) for tag in selected_tags])
+
+    return params
+
+
+def add_movements_to_results_list(movements):
+    for movement in movements:
+        new_movement = bpy.context.scene.heat_animation_results_list.add()
+        new_movement.name = movement['name']
+        new_movement.movement_id = movement['id']
+        new_movement.description = movement['description']
+        new_movement.download_url = movement['downloadUrl']
+        new_movement.preview_image_url = movement['previewImageUrl']
+        new_movement.url = movement['url']
+
+        if not movement['tags']:
+            continue
+        for tag in movement['tags']:
+            tag_item = new_movement.tags.add()
+            tag_item['id'] = tag['id']
+            tag_item['url'] = tag['url']
+            tag_item['parent_id'] = tag['parentID'] or -1
+            tag_item['name'] = tag['name']

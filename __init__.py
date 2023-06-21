@@ -60,6 +60,7 @@ classes = (
     ImportDirOperator,
     ExportOperator,
     APISearchAnimationsOperator,
+    APIFetchMoreAnimationsOperator,
     APIDownloadAnimationOperator,
     APIFetchTagsOperator,
     AuthGetAPIKeyOperator,
