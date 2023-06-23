@@ -79,7 +79,7 @@ class IMPORT_SCENE_OT_vrm_as_gltf(bpy.types.Operator, ImportHelper):
         )
 
         if self.flip_forwards:
-            obj = bpy.context.active_object
+            obj = self.get_highest_parent_of_active_object()
             obj.rotation_mode = 'QUATERNION'
             obj.rotation_quaternion = Quaternion((0, 0, 0, 1))
 
@@ -91,6 +91,18 @@ class IMPORT_SCENE_OT_vrm_as_gltf(bpy.types.Operator, ImportHelper):
             text="VRM as GLTF/GLB (*.vrm)",
             icon="ARMATURE_DATA"
         )
+
+    def get_highest_parent_of_active_object(self):
+        active_object = bpy.context.active_object
+
+        if active_object:
+            highest_parent = active_object
+            while highest_parent.parent:
+                highest_parent = highest_parent.parent
+
+            return highest_parent
+
+        return active_object
 
     @classmethod
     def register(cls):
