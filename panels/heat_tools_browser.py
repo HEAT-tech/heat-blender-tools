@@ -25,7 +25,6 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
 
         box = layout.box()
         box.row(align=True).prop(context.scene, 'heat_search_query', text='', icon='VIEWZOOM')
-        box.row(align=True).operator("heat.api_search_animations", text='Fetch Heat Animations', icon="FILE_REFRESH")
         # Expandable Advanced Search menu
         box.row(align=True).prop(context.scene, "heat_advanced_search", text="Advanced Search", icon="TRIA_DOWN" if context.scene.heat_advanced_search else "TRIA_RIGHT", emboss=False, icon_only=True, toggle=True)
         if context.scene.heat_advanced_search:
@@ -40,6 +39,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
             )
             box.row(align=True).label(text="Movement Type:")
             box.row(align=True).prop(context.scene, "heat_motion_types")
+        box.row(align=True).operator("heat.api_search_animations", text='Fetch Heat Animations', icon="FILE_REFRESH")
         layout.separator()
 
         layout.label(text="Results:")
@@ -134,10 +134,10 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
 
     def draw_fetch_more(self, context, layout):
         if context.scene.heat_animation_fetching_next_results_page:
-            layout.box().row(align=True).label(text="Fetching results...", icon="FILE_REFRESH")
+            layout.box().row(align=True).label(text="Fetching...", icon="FILE_REFRESH")
             return
         if context.scene.heat_animation_next_results_page > 1:
-            layout.operator('heat.api_fetch_more_animations', icon="FORWARD", text="Fetch More...")
+            layout.operator('heat.api_fetch_more_animations', icon="FORWARD", text="More Results...")
 
     @classmethod
     def register(cls):
