@@ -6,6 +6,12 @@
             "mixamorig:headtop_end",
             "heat_headtop_end",
             "mixamorig:hips"
+        ],
+        "rightUpperArm": [
+            "rightarm"
+        ],
+        "leftUpperArm": [
+            "leftarm"
         ]
     },
     "shapes": {}
