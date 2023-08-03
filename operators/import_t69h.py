@@ -9,7 +9,7 @@ class ImportT69HOperator(bpy.types.Operator):
 
     def execute(self, context):
         this_dir = os.path.dirname(os.path.realpath(__file__))
-        t69h_glb_filepath = os.path.join(this_dir, '../T69H_v12.glb')
+        t69h_glb_filepath = os.path.join(this_dir, '../T69H_v18.glb')
         bpy.ops.import_scene.gltf(filepath=t69h_glb_filepath)
         return {'FINISHED'}
 

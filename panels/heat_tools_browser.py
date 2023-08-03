@@ -26,7 +26,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         box = layout.box()
         box.row(align=True).prop(context.scene, 'heat_search_query', text='', icon='VIEWZOOM')
         # Expandable Advanced Search menu
-        box.row(align=True).prop(context.scene, "heat_advanced_search", text="Advanced Search", icon="TRIA_DOWN" if context.scene.heat_advanced_search else "TRIA_RIGHT", emboss=False, icon_only=True, toggle=True)
+        box.row(align=True).prop(context.scene, "heat_advanced_search", text="Filter Tags", icon="TRIA_DOWN" if context.scene.heat_advanced_search else "TRIA_RIGHT", emboss=False, icon_only=True, toggle=True)
         if context.scene.heat_advanced_search:
             box.row(align=True).label(text="Tags:")
             box.row(align=True).template_list(

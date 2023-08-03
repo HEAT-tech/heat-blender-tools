@@ -384,4 +384,35 @@ def detect_retarget_bones() -> {str: (str, str)}:
                     retargeting_dict[bone_source] = (spine_target, bone_key)
                     break
 
-    return retargeting_dict
+    sorted_bones_by_depth = sort_bones_by_depth(armature_source, retargeting_dict)
+    return remove_duplicate_values(sorted_bones_by_depth)
+
+
+def remove_duplicate_values(bones_dict):
+    seen_values = {}
+    result = {}
+
+    for key, value in bones_dict.items():
+        if value[0] not in seen_values:
+            seen_values[value[0]] = key
+            result[key] = value
+        else:
+            result[key] = ('', '')
+
+    return result
+
+
+def sort_bones_by_depth(armature, bones_dict):
+    result = {}
+
+    def traverse_bone_tree(bone):
+        if bone.name in bones_dict:
+            result[bone.name] = bones_dict[bone.name]
+        for child in bone.children:
+            traverse_bone_tree(child)
+
+    for bone in armature.data.bones:
+        if not bone.parent:
+            traverse_bone_tree(bone)
+
+    return result

@@ -4,14 +4,21 @@
     "bones": {
         "custom_bone_heat_headtop_end": [
             "mixamorig:headtop_end",
-            "heat_headtop_end",
-            "mixamorig:hips"
+            "heat_headtop_end"
         ],
         "rightUpperArm": [
             "rightarm"
         ],
         "leftUpperArm": [
             "leftarm"
+        ],
+        "custom_bone_heat_upperarm_l": [
+            "heat_upperarm_l",
+            "mixamorig:leftarm"
+        ],
+        "custom_bone_heat_upperarm_r": [
+            "heat_upperarm_r",
+            "mixamorig:rightarm"
         ]
     },
     "shapes": {}
