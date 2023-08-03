@@ -7,7 +7,7 @@ class DotENV():
         this_dir = os.path.dirname(os.path.realpath(__file__))
         env_filepath = os.path.join(this_dir, '.env')
         self.env_vars = self.read_env_file(env_filepath)
-        print(".env loaded")
+        # print(".env loaded")
 
 
     def read_env_file(self, file_path) -> Optional[Dict[str, str]]:
