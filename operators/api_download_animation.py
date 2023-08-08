@@ -205,11 +205,11 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
                         # if track['name'] == 'heat_Hips':
                         #     quaternions[-1][1] *= Quaternion((1, 1, -1, -1))
                         # fix inverted thumbs
-                        if track['name'] == 'heat_Thumb1_r':
-                            quaternions[-1][1] *= Quaternion((1, 1, -1, -1))
-                        if track['name'] == 'heat_Thumb1_l' :
-                            q = Quaternion((quaternions[-1][1][0], quaternions[-1][1][3], quaternions[-1][1][1], quaternions[-1][1][2]))
-                            quaternions[-1][1] = q * Quaternion((1, 1, 1, 1))
+                        # if track['name'] == 'heat_Thumb1_r':
+                        #     quaternions[-1][1] *= Quaternion((1, 1, -1, -1))
+                        # if track['name'] == 'heat_Thumb1_l' :
+                        #     q = Quaternion((quaternions[-1][1][0], quaternions[-1][1][3], quaternions[-1][1][1], quaternions[-1][1][2]))
+                        #     quaternions[-1][1] = q * Quaternion((1, 1, 1, 1))
 
                     # fix singularity
                     for j in range(1, len(quaternions)):
