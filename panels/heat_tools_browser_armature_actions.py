@@ -13,11 +13,14 @@ class HeatToolsBrowserArmatureActionsPanel(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         layout.label(text="Armature actions:")
-        layout.operator("heat.import_t69h_armature", text="Import New Armature")
-        layout.operator("heat.import_t69h", text="Import Armature+Mesh")
-        layout.operator("heat.bind_t69h_with_auto_weights")
-        layout.operator("heat.swap_hips_root_location_fcurves")
-        layout.operator("heat.pose_to_rest")
+        layout.operator("heat.import_t69h_armature", text="Import New Armature", icon="ARMATURE_DATA")
+        layout.operator("heat.import_t69h", text="Import Armature+Mesh", icon="ARMATURE_DATA")
+        layout.operator("heat.bind_t69h_with_auto_weights", icon="MATCLOTH")
+        layout.operator("heat.swap_hips_root_location_fcurves", icon="FILE_REFRESH")
+
+        layout.separator()
+        layout.label(text="Pose mode actions:")
+        layout.operator("heat.pose_to_rest", icon="POSE_HLT")
 
     @classmethod
     def register(cls):
