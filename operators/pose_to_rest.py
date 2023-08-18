@@ -3,7 +3,7 @@ import bpy
 class PoseToRest(bpy.types.Operator):
     bl_idname = 'heat.pose_to_rest'
     bl_label = 'Pose to Rest'
-    bl_description = 'Pose to rest description'
+    bl_description = 'Thoroughly apply current pose as rest pose.\nUseful for applying T-pose on an A-pose armature.'
     bl_options = {'REGISTER', 'UNDO', 'INTERNAL'}
 
     @classmethod
