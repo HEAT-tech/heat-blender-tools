@@ -17,6 +17,7 @@ class HeatToolsBrowserArmatureActionsPanel(bpy.types.Panel):
         layout.operator("heat.import_t69h", text="Import Armature+Mesh")
         layout.operator("heat.bind_t69h_with_auto_weights")
         layout.operator("heat.swap_hips_root_location_fcurves")
+        layout.operator("heat.pose_to_rest")
 
     @classmethod
     def register(cls):

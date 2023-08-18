@@ -12,7 +12,7 @@ bl_info = {
     "name": "HeatBlender",
     "author": "Alfredo Gonzalez-Martinez",
     "description": "Heat tools for Blender",
-    "version": (0, 6, 8),
+    "version": (0, 6, 9),
     "blender": (2, 80, 0),
     "location": "View3D",
     "warning": "",
@@ -74,6 +74,7 @@ classes = (
     ActionHipSyncOperator,
     BakeSelectedActionsOperator,
     IMPORT_SCENE_OT_vrm_as_gltf,
+    PoseToRest,
 
     # Retargetter
     BuildBoneList,
