@@ -75,6 +75,7 @@ classes = (
     BakeSelectedActionsOperator,
     IMPORT_SCENE_OT_vrm_as_gltf,
     PoseToRest,
+    ShapeKeyApplier,
 
     # Retargetter
     BuildBoneList,

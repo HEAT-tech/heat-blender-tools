@@ -25,3 +25,4 @@ from .import_vrm import *
 from .api_fetch_tags import *
 from .api_fetch_more_animations import *
 from .pose_to_rest import PoseToRest
+from .shape_key_to_basis import ShapeKeyApplier
