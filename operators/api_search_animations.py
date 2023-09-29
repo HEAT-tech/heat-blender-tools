@@ -35,7 +35,6 @@ class APISearchAnimationsOperator(bpy.types.Operator):
                 self.layout.label(text="and that you have a stable internet connection.")
             bpy.context.window_manager.popup_menu(error, title="ERROR FETCHING ANIMATIONS", icon='ERROR')
 
-
         context.scene.heat_animation_results_loading = False
         context.area.tag_redraw()
 

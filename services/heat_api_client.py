@@ -17,7 +17,7 @@ class HeatAPIClient:
 
     def __init__(self):
         env = dotenv.DotENV()
-        if env.is_true('HEAT_USE_DEV_API') == 'true':
+        if env.is_true('HEAT_USE_DEV_API'):
             self.base_url = "https://dev-partner-api.heat.tech/dev/"
 
     def _get_user_api_key_header(self):
