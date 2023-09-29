@@ -34,6 +34,6 @@ class DotENV():
         return self.env_vars.get(key) or default
 
     def is_true(self, key: str):
-        if self.get(key).lower == 'true':
+        if self.get(key).lower() == 'true':
             return True
         return False
