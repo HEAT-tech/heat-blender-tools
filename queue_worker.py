@@ -28,7 +28,7 @@ def work_queue():
             movement_index = len(bpy.context.scene.heat_animation_results_list.items())-1
 
         bpy.context.scene.heat_animation_results_list_index = movement_index
-        bpy.ops.heat.panic_reset()
+        # bpy.ops.heat.panic_reset()
 
         # download animation
         operator = bpy.ops.heat.download_animation
