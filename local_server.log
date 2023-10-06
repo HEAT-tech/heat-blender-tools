@@ -1,13 +1,13 @@
 unhandled exception during asyncio.run() shutdown
-task: <Task finished name='Task-1' coro=<_run_app() done, defined at C:\Users\gonza\Desktop\HeatBlender\Addon - HeatBlender\dependencies\heat-tools-0.6.3\3-10\installed\aiohttp\web.py:289> exception=OSError(10048, "error while attempting to bind on address ('::', 8690, 0, 0): only one usage of each socket address (protocol/network address/port) is normally permitted")>
+task: <Task finished name='Task-1' coro=<_run_app() done, defined at C:\Users\gonza\Desktop\HeatBlender\Addon - HeatBlender\dependencies\heat-tools-0.7.0\3-10\installed\aiohttp\web.py:289> exception=OSError(10048, "error while attempting to bind on address ('::', 8690, 0, 0): only one usage of each socket address (protocol/network address/port) is normally permitted")>
 Traceback (most recent call last):
-  File "C:\Users\gonza\Desktop\HeatBlender\Addon - HeatBlender\dependencies\heat-tools-0.6.3\3-10\installed\aiohttp\web.py", line 516, in run_app
+  File "C:\Users\gonza\Desktop\HeatBlender\Addon - HeatBlender\dependencies\heat-tools-0.7.0\3-10\installed\aiohttp\web.py", line 516, in run_app
     loop.run_until_complete(main_task)
   File "C:\Program Files\Blender Foundation\Blender 3.2\3.2\python\lib\asyncio\base_events.py", line 641, in run_until_complete
     return future.result()
-  File "C:\Users\gonza\Desktop\HeatBlender\Addon - HeatBlender\dependencies\heat-tools-0.6.3\3-10\installed\aiohttp\web.py", line 415, in _run_app
+  File "C:\Users\gonza\Desktop\HeatBlender\Addon - HeatBlender\dependencies\heat-tools-0.7.0\3-10\installed\aiohttp\web.py", line 415, in _run_app
     await site.start()
-  File "C:\Users\gonza\Desktop\HeatBlender\Addon - HeatBlender\dependencies\heat-tools-0.6.3\3-10\installed\aiohttp\web_runner.py", line 121, in start
+  File "C:\Users\gonza\Desktop\HeatBlender\Addon - HeatBlender\dependencies\heat-tools-0.7.0\3-10\installed\aiohttp\web_runner.py", line 121, in start
     self._server = await loop.create_server(
   File "C:\Program Files\Blender Foundation\Blender 3.2\3.2\python\lib\asyncio\base_events.py", line 1493, in create_server
     raise OSError(err.errno, 'error while attempting '
@@ -15,13 +15,13 @@ OSError: [Errno 10048] error while attempting to bind on address ('::', 8690, 0,
 Traceback (most recent call last):
   File "C:\Users\gonza\AppData\Roaming\Blender Foundation\Blender\3.2\scripts\addons\Addon - HeatBlender\local_server.py", line 130, in <module>
     web.run_app(app, port=8690)
-  File "C:\Users\gonza\Desktop\HeatBlender\Addon - HeatBlender\dependencies\heat-tools-0.6.3\3-10\installed\aiohttp\web.py", line 516, in run_app
+  File "C:\Users\gonza\Desktop\HeatBlender\Addon - HeatBlender\dependencies\heat-tools-0.7.0\3-10\installed\aiohttp\web.py", line 516, in run_app
     loop.run_until_complete(main_task)
   File "C:\Program Files\Blender Foundation\Blender 3.2\3.2\python\lib\asyncio\base_events.py", line 641, in run_until_complete
     return future.result()
-  File "C:\Users\gonza\Desktop\HeatBlender\Addon - HeatBlender\dependencies\heat-tools-0.6.3\3-10\installed\aiohttp\web.py", line 415, in _run_app
+  File "C:\Users\gonza\Desktop\HeatBlender\Addon - HeatBlender\dependencies\heat-tools-0.7.0\3-10\installed\aiohttp\web.py", line 415, in _run_app
     await site.start()
-  File "C:\Users\gonza\Desktop\HeatBlender\Addon - HeatBlender\dependencies\heat-tools-0.6.3\3-10\installed\aiohttp\web_runner.py", line 121, in start
+  File "C:\Users\gonza\Desktop\HeatBlender\Addon - HeatBlender\dependencies\heat-tools-0.7.0\3-10\installed\aiohttp\web_runner.py", line 121, in start
     self._server = await loop.create_server(
   File "C:\Program Files\Blender Foundation\Blender 3.2\3.2\python\lib\asyncio\base_events.py", line 1493, in create_server
     raise OSError(err.errno, 'error while attempting '

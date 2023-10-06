@@ -5,6 +5,7 @@ import platform
 import subprocess
 import sys
 import importlib.util
+import socket
 
 def import_from_filepath(filepath):
     # Add the directory containing the module to sys.path
@@ -47,6 +48,15 @@ async def add_cors_headers(app, handler):
 
 app = web.Application()
 routes = web.RouteTableDef()
+
+def is_port_available(port):
+    """Check if a given port is available."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        try:
+            s.bind(("0.0.0.0", port))
+            return True
+        except OSError:
+            return False
 
 
 @routes.get('/auth/login')
@@ -125,6 +135,10 @@ def stop(process):
 
 
 if __name__ == '__main__':
+    if is_port_available(8690) == False:
+        print("Port 8690 is already in use. Exiting.")
+        exit()
+
     app.add_routes(routes)
     app.middlewares.append(add_cors_headers)
     web.run_app(app, port=8690)
