@@ -139,6 +139,11 @@ if __name__ == '__main__':
         print("Port 8690 is already in use. Exiting.")
         exit()
 
+    print("Resetting queue database...")
+    heat_queue = SimpleQueue('heat_queue.db')
+    heat_queue.destroy()
+
+    print("Starting server...")
     app.add_routes(routes)
     app.middlewares.append(add_cors_headers)
     web.run_app(app, port=8690)

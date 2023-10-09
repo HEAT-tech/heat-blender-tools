@@ -10,6 +10,7 @@ class SimpleQueue:
         else:
             filename = os.path.join(tempfile.gettempdir(), filename)
         self.conn = sqlite3.connect(filename)
+        self.filename = filename
 
         # check if the file already exists, if not, create the table
         if not os.path.exists(filename):
@@ -68,4 +69,5 @@ class SimpleQueue:
 
     def destroy(self):
         self.conn.close()
-        os.remove(self.conn.database)
+        if os.path.exists(self.filename):
+            os.remove(self.filename)
