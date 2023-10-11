@@ -24,8 +24,9 @@ simple_queue_filepath = path.join(os.path.dirname(__file__), 'simple_queue.py')
 simple_queue_module = import_from_filepath(simple_queue_filepath)
 SimpleQueue = simple_queue_module.SimpleQueue
 
-async def add_cors_headers(app, handler):
-    async def middleware(request):
+def add_cors_headers(app):
+    @web.middleware
+    async def middleware_handler(request, handler):
         if request.method == 'OPTIONS':
             # Handle preflight request
             response = web.Response()
@@ -44,7 +45,8 @@ async def add_cors_headers(app, handler):
 
         return response
 
-    return middleware
+    return middleware_handler
+
 
 app = web.Application()
 routes = web.RouteTableDef()
@@ -76,16 +78,15 @@ async def downloadMovement(request):
     return web.Response(text=f'Movement ({data["movementID"]}) added to the download queue!')
 
 
-
 @routes.get('/ping')
-async def login(request):
+async def ping(request):
     heat_queue = SimpleQueue('heat_queue.db')
     heat_queue.push('pong', {})
     return web.Response(text=f'pong!')
 
 
 @routes.get('/add-cube')
-async def login(request):
+async def addCube(request):
     heat_queue = SimpleQueue('heat_queue.db')
     heat_queue.push('addCube', {})
     return web.Response(text=f'done.')
@@ -145,5 +146,5 @@ if __name__ == '__main__':
 
     print("Starting server...")
     app.add_routes(routes)
-    app.middlewares.append(add_cors_headers)
+    app.middlewares.append(add_cors_headers(app))
     web.run_app(app, port=8690)

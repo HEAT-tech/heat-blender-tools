@@ -75,6 +75,7 @@ classes = (
     BakeSelectedActionsOperator,
     IMPORT_SCENE_OT_vrm_as_gltf,
     PoseToRest,
+    OpenWebUIOperator,
 
     # Retargetter
     BuildBoneList,
@@ -100,6 +101,7 @@ classes = (
     HeatTagResultListItem,
     HeatTagResultsList,
 
+    HeatToolsWebUIPanel,
     HeatToolsBatchPanel,
     HeatToolsPanel,
     HeatToolsBrowserPanel,
@@ -127,7 +129,7 @@ class HeatAddonPreferences(bpy.types.AddonPreferences):
     start_daemon_on_startup: bpy.props.BoolProperty(
         name="Start Daemon on Startup",
         description="If enabled, Heat Tools can be controlled by web UI (requires restart)",
-        default=False
+        default=True
     )
 
     heat_user_api_key: bpy.props.StringProperty(
