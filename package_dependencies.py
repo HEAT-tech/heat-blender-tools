@@ -15,7 +15,7 @@ def install_requirements(venv_dir, requirements_file):
     subprocess.check_call([pip_exe, 'install', '-r', requirements_file])
 
 def copy_dependencies(venv_dir, dest_dir):
-    """Copy installed packages to the destination directory."""
+    """Copy installed packages to the destination directory and then zip them."""
     site_packages_dir = os.path.join(venv_dir, 'lib', 'python{}'.format(sys.version[:3]), 'site-packages')
 
     # For Windows, the structure is a bit different
@@ -32,6 +32,12 @@ def copy_dependencies(venv_dir, dest_dir):
             shutil.copytree(s, d, ignore=shutil.ignore_patterns('__pycache__'))
         else:
             shutil.copy2(s, d)
+
+    # Zip the copied dependencies
+    shutil.make_archive(os.path.join(dest_dir, "dependencies"), 'zip', dest_dir)
+
+    # Optionally, if you want to remove the copied files after zipping, uncomment the following line:
+    # shutil.rmtree(dest_dir)
 
 def main():
     # Determine the OS-specific subdirectory

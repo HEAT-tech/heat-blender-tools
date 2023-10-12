@@ -15,22 +15,31 @@ bk_logger = logging.getLogger(__name__)
 
 
 def ensure_preinstalled_deps_copied():
-  """Copy dependencies for current platform and python version if aplicable.
-  Bundled dependencies might be already copied.
-  Or their python version might be different from python in currently running Blender.
-  """
-  if not bundled_version_is_correct():
-    bundled = global_vars.BUNDLED_FOR_PYTHON
-    bk_logger.warning(f'Skipping dependencies copy: bundled for python {bundled}, running on python {sys.version}')
-    return
+    """Copy or unzip dependencies for current platform and python version if applicable.
+    Bundled dependencies might be already copied.
+    Or their python version might be different from python in currently running Blender.
+    """
+    if not bundled_version_is_correct():
+        bundled = global_vars.BUNDLED_FOR_PYTHON
+        bk_logger.warning(f'Skipping dependencies copy: bundled for python {bundled}, running on python {sys.version}')
+        return
 
-  deps_path = path.join(path.dirname(__file__), f"dependencies/{platform.system()}")
-  deps_path = path.abspath(deps_path)
-  install_into = get_preinstalled_deps_path()
-  
-  if not path.isdir(install_into):
-    bk_logger.warning(f'Copying dependencies from {deps_path} into {install_into}')
-    shutil.copytree(deps_path, install_into)
+    deps_path = path.join(path.dirname(__file__), f"dependencies/{platform.system()}")
+    deps_path = path.abspath(deps_path)
+    install_into = get_preinstalled_deps_path()
+
+    zip_file_path = path.join(deps_path, "dependencies.zip")
+
+    if not path.isdir(install_into):
+        if path.isfile(zip_file_path):
+            # If dependencies.zip is present, unzip its contents
+            bk_logger.warning(f'Unzipping dependencies from {zip_file_path} into {install_into}')
+            shutil.unpack_archive(zip_file_path, install_into)
+            return
+        # If dependencies.zip is not present and the target directory doesn't exist, copy the dependencies
+        bk_logger.warning(f'Copying dependencies from {deps_path} into {install_into}')
+        shutil.copytree(deps_path, install_into)
+
 
 def bundled_version_is_correct() -> bool:
     """Check if bundled dependencies are for the major python version of currently running Blender."""
@@ -78,6 +87,7 @@ def ensure_deps():
       import aiohttp
       import certifi
       from aiohttp import web, web_request
+      import aiohttp_cors
       return
     except:
       bk_logger.warning('dependency missing, installing via pip.')
