@@ -16,7 +16,9 @@ def install_requirements(venv_dir, requirements_file):
 
 def copy_dependencies(venv_dir, dest_dir):
     """Copy installed packages to the destination directory and then zip them."""
-    site_packages_dir = os.path.join(venv_dir, 'lib', 'python{}'.format(sys.version[:3]), 'site-packages')
+    major_version = sys.version_info.major
+    minor_version = sys.version_info.minor
+    site_packages_dir = os.path.join(venv_dir, 'lib', f'python{major_version}.{minor_version}', 'site-packages')
 
     # For Windows, the structure is a bit different
     if sys.platform == "win32":
