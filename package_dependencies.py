@@ -35,7 +35,6 @@ def copy_dependencies(venv_dir, dest_dir):
 
     # Zip the copied dependencies
     shutil.make_archive(os.path.join(dest_dir, "dependencies"), 'zip', dest_dir)
-
     # Optionally, if you want to remove the copied files after zipping, uncomment the following line:
     # shutil.rmtree(dest_dir)
 
@@ -43,8 +42,6 @@ def main():
     # Determine the OS-specific subdirectory
     os_name = platform.system()
     print(f"installing dependencies for {os_name}")
-    if os_name == "Darwin":
-        os_name = "Mac"
 
     # Paths
     current_dir = os.path.dirname(os.path.abspath(__file__))
