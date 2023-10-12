@@ -1,4 +1,5 @@
 from aiohttp import web
+import aiohttp_cors
 import os
 from os import environ, path
 import platform
@@ -24,32 +25,15 @@ simple_queue_filepath = path.join(os.path.dirname(__file__), 'simple_queue.py')
 simple_queue_module = import_from_filepath(simple_queue_filepath)
 SimpleQueue = simple_queue_module.SimpleQueue
 
-def add_cors_headers(app):
-    @web.middleware
-    async def middleware_handler(request, handler):
-        if request.method == 'OPTIONS':
-            # Handle preflight request
-            response = web.Response()
-            response.headers['Access-Control-Allow-Origin'] = '*'
-            response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT'
-            response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
-            response.headers['Access-Control-Allow-Credentials'] = 'true'
-            return response
-
-        # Handle regular request
-        response = await handler(request)
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
-        response.headers['Access-Control-Allow-Credentials'] = 'true'
-
-        return response
-
-    return middleware_handler
-
-
 app = web.Application()
 routes = web.RouteTableDef()
+cors = aiohttp_cors.setup(app, defaults={
+    "*": aiohttp_cors.ResourceOptions(
+        allow_credentials=True,
+        expose_headers="*",
+        allow_headers="*",
+    )
+})
 
 def is_port_available(port):
     """Check if a given port is available."""
@@ -146,5 +130,6 @@ if __name__ == '__main__':
 
     print("Starting server...")
     app.add_routes(routes)
-    app.middlewares.append(add_cors_headers(app))
+    for route in list(app.router.routes()):
+        cors.add(route)
     web.run_app(app, port=8690)

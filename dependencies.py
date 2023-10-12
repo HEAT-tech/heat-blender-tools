@@ -21,7 +21,7 @@ def ensure_preinstalled_deps_copied():
   """
   if not bundled_version_is_correct():
     bundled = global_vars.BUNDLED_FOR_PYTHON
-    bk_logger.info(f'Skipping dependencies copy: bundled for python {bundled}, running on python {sys.version}')
+    bk_logger.warning(f'Skipping dependencies copy: bundled for python {bundled}, running on python {sys.version}')
     return
 
   deps_path = path.join(path.dirname(__file__), f"dependencies/{platform.system()}")
@@ -29,14 +29,13 @@ def ensure_preinstalled_deps_copied():
   install_into = get_preinstalled_deps_path()
   
   if not path.isdir(install_into):
-    bk_logger.info(f'Copying dependencies from {deps_path} into {install_into}')
+    bk_logger.warning(f'Copying dependencies from {deps_path} into {install_into}')
     shutil.copytree(deps_path, install_into)
 
-def bundled_version_is_correct() -> Tuple[bool, str, str]:
-    """Check if bundled dependencies are for the python version of currently running Blender."""
-    bundled = global_vars.BUNDLED_FOR_PYTHON
-    current = f'{sys.version_info.major}.{sys.version_info.minor}'
-    return bundled == current
+def bundled_version_is_correct() -> bool:
+    """Check if bundled dependencies are for the major python version of currently running Blender."""
+    bundled_major_version = int(global_vars.BUNDLED_FOR_PYTHON.split('.')[0])
+    return bundled_major_version == sys.version_info.major
 
 def get_deps_directory_path() -> str:
   """Get path where dependencies (preinstalled and installed) should/are installed for this version of addon."""
@@ -78,10 +77,10 @@ def ensure_deps():
     try:
       import aiohttp
       import certifi
-      # from flask import Flask, request
       from aiohttp import web, web_request
       return
     except:
+      bk_logger.warning('dependency missing, installing via pip.')
       install_dependencies()
 
 def install_dependencies():
@@ -93,22 +92,22 @@ def install_dependencies():
 
   command = [sys.executable, '-m', 'ensurepip', '--user']
   result = subprocess.run(command, env=env, capture_output=True, text=True)
-  bk_logger.warn(f"PIP INSTALLATION:\ncommand {command} exited: {result.returncode},\nstdout: {result.stdout},\nstderr: {result.stderr}")
+  bk_logger.warning(f"PIP INSTALLATION:\ncommand {command} exited: {result.returncode},\nstdout: {result.stdout},\nstderr: {result.stderr}")
 
   requirements = path.join(path.dirname(__file__), 'requirements.txt')
   command = [sys.executable, '-m', 'pip', 'install', '--upgrade', '-t', get_installed_deps_path(), '-r', requirements]
   result = subprocess.run(command, env=env, capture_output=True, text=True)
-  bk_logger.warn(f"AIOHTTP INSTALLATION:\ncommand {command} exited: {result.returncode},\nstdout: {result.stdout},\nstderr: {result.stderr}")
+  bk_logger.warning(f"AIOHTTP INSTALLATION:\ncommand {command} exited: {result.returncode},\nstdout: {result.stdout},\nstderr: {result.stderr}")
   if result.returncode == 0:
-    bk_logger.info(f"Install succesfully finished in {time.time()-started}")
+    bk_logger.warning(f"Install succesfully finished in {time.time()-started}")
     return
 
-  bk_logger.warn("Install from requirements.txt failed, trying with unconstrained versions...")
+  bk_logger.warning("Install from requirements.txt failed, trying with unconstrained versions...")
   command = [sys.executable, '-m', 'pip', 'install', '--upgrade', '-t', get_installed_deps_path(), 'aiohttp', 'certifi']
   result = subprocess.run(command, env=env, capture_output=True, text=True)
-  bk_logger.info(f"UNCONSTRAINED INSTALLATION:\ncommand {command} exited: {result.returncode},\nstdout: {result.stdout},\nstderr: {result.stderr}")
+  bk_logger.warning(f"UNCONSTRAINED INSTALLATION:\ncommand {command} exited: {result.returncode},\nstdout: {result.stdout},\nstderr: {result.stderr}")
   if result.returncode == 0:
-    bk_logger.info(f"Install succesfully finished in {time.time()-started}")
+    bk_logger.warning(f"Install succesfully finished in {time.time()-started}")
     return
   
   bk_logger.critical("Installation failed")
