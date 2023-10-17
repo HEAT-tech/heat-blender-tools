@@ -37,7 +37,8 @@ class SimpleQueue:
         """, (task, data))
         self.conn.commit()
 
-    def pop(self):
+    def \
+            pop(self):
         cursor = self.conn.cursor()
         cursor.execute("""
             SELECT * FROM tasks WHERE completed = 0 AND running = 0 ORDER BY id LIMIT 1

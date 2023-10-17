@@ -1,4 +1,5 @@
 import bpy
+import time
 from .simple_queue import SimpleQueue
 
 def work_queue():
@@ -36,11 +37,19 @@ def work_queue():
             elif movement['exportTo'] == 2:
                 bpy.ops.heat.import_t69h_armature()
 
-        # download animation
-        operator = bpy.ops.heat.download_animation
-        context = bpy.context.copy()
-        context['area'] = bpy.context.screen.areas[0]  # Set the desired area context
-        operator(context, 'INVOKE_DEFAULT')
+        bpy.context.view_layer.update()
+        time.sleep(0.125)
+        queue.push('loadMovement', '')
+    elif task['task'] == 'loadMovement':
+        # download animation after movement has been set as active
+        # necessary in order to not lose context
+        for area in bpy.context.screen.areas:
+            if area.type == 'VIEW_3D':
+                override = bpy.context.copy()
+                override['area'] = area
+                override['region'] = area.regions[0]
+                bpy.ops.heat.download_animation(override, 'INVOKE_DEFAULT')
+                break
     elif task['task'] == "addCube":
         bpy.ops.mesh.primitive_cube_add()
 
