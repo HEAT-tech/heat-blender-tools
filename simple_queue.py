@@ -12,9 +12,10 @@ class SimpleQueue:
         self.conn = sqlite3.connect(filename)
         self.filename = filename
 
-        # check if the file already exists, if not, create the table
-        if not os.path.exists(filename):
-            self.create()
+        self.ensure_exists_or_create()
+
+    def ensure_exists_or_create(self):
+        self.create()
 
     def create(self):
         cursor = self.conn.cursor()

@@ -22,21 +22,32 @@ def import_from_filepath(filepath):
     return module
 
 
-def force_kill(delete_log=False):
-    log_path = path.join(os.path.dirname(__file__), 'local_server.log')
+def force_kill(port=8690):
     try:
-        # Finding the process ID using the log file
-        pid = subprocess.check_output(["lsof", "-t", log_path], text=True).strip()
+        os_type = platform.system().lower()
 
-        if pid:
-            # Killing the process
-            os.kill(int(pid), signal.SIGKILL)
-            print(f"Killed process {pid}")
+        if os_type == "windows":
+            # Finding the process using the specific port
+            command = f"netstat -ano | findstr :{port}"
+            result = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE).stdout.readlines()
 
-        # Deleting the log file
-        if delete_log:
-            os.remove(log_path)
-            print(f"Deleted file {log_path}")
+            for line in result:
+                parts = line.decode().strip().split()
+                if len(parts) > 4:
+                    process_id = parts[4]  # Extracting the PID
+                    # Killing the process
+                    subprocess.run(f"taskkill /PID {process_id} /F", shell=True)
+                    print(f"Killed process on port {port} with PID: {process_id}")
+
+        else:  # Linux and MacOS
+            # Finding the process ID using the specific port
+            command = f"lsof -i :{port} -t"
+            process_id = subprocess.check_output(command, shell=True).decode().strip()
+
+            if process_id:
+                # Killing the process
+                subprocess.run(f"kill -9 {process_id}", shell=True)
+                print(f"Killed process on port {port} with PID: {process_id}")
 
     except Exception as e:
         print(f"An error occurred: {e}")
