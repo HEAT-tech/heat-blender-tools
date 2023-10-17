@@ -15,6 +15,7 @@ def work_queue():
         bpy.context.preferences.addons[this_plugin_name].preferences.heat_user_api_key = auth_token
         bpy.ops.heat.panic_reset()
     elif task['task'] == "downloadMovement":
+        bpy.context.window_manager.heat_preview_webui = True
         movement = task["data"]
         movement_index = find_animation_index_by_id(movement['movementID'])
 
@@ -43,6 +44,9 @@ def work_queue():
     elif task['task'] == 'loadMovement':
         # download animation after movement has been set as active
         # necessary in order to not lose context
+        if bpy.context.window_manager.heat_preview_texture_loading:
+            return 0.25
+
         for area in bpy.context.screen.areas:
             if area.type == 'VIEW_3D':
                 override = bpy.context.copy()

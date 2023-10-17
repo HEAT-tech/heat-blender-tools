@@ -87,7 +87,10 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
     def draw_heat_animation_as_icon_preview(self, context, layout):
         layout.label(text="Preview:")
         preview_box = layout.box()
-        if context.scene.heat_animation_results_list_index >= 0:
+
+        if context.window_manager.heat_preview_webui:
+            tpath = get_addon_thumbnail_path('heat_logo.png')
+        elif context.scene.heat_animation_results_list_index >= 0:
             active_movement_index = context.scene.heat_animation_results_list_index
             active_movement = context.scene.heat_animation_results_list[active_movement_index]
 
@@ -97,6 +100,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
             self.clear_heat_anim_preview_image_blocks(image_name)
 
             if os.path.exists(download_path) == False:
+                context.window_manager.heat_preview_texture_loading = True
                 api.synchronous_download_file(active_movement.preview_image_url, download_path)
 
             # tpath = get_addon_thumbnail_path('dummy.png')
@@ -107,6 +111,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         img = bpy.data.images.load(tpath, check_existing=True)
         preview = img.preview_ensure()
         preview_box.template_icon(icon_value=preview.icon_id, scale=10.0)
+        context.window_manager.heat_preview_texture_loading = False
 
 
     def draw_heat_animation_preview(self, context, layout):
@@ -167,6 +172,14 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         )
 
         bpy.types.Scene.heat_preview_texture = bpy.props.PointerProperty(type=bpy.types.Texture)
+        bpy.types.WindowManager.heat_preview_texture_loading = bpy.props.BoolProperty(
+            name = "Heat preview texture loading state",
+            default = False
+        )
+        bpy.types.WindowManager.heat_preview_webui = bpy.props.BoolProperty(
+            name = "Heat preview texture unavailable during webui use",
+            default = False
+        )
 
         bpy.types.Scene.heat_animation_results_loading = bpy.props.BoolProperty(
             name = "Heat animation results fetch state",
@@ -207,6 +220,8 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
         del bpy.types.Scene.heat_search_query
         del bpy.types.Scene.heat_motion_types
         del bpy.types.Scene.heat_preview_texture
+        del bpy.types.WindowManager.heat_preview_texture_loading
+        del bpy.types.WindowManager.heat_preview_webui
         del bpy.types.Scene.heat_animation_results_loading
         del bpy.types.Scene.heat_animation_id_downloading
         del bpy.types.Scene.heat_animation_id_downloading_progress

@@ -12,7 +12,7 @@ bl_info = {
     "name": "HeatBlender",
     "author": "Alfredo Gonzalez-Martinez",
     "description": "Heat tools for Blender",
-    "version": (0, 7, 1),
+    "version": (1, 0, 0),
     "blender": (2, 80, 0),
     "location": "View3D",
     "warning": "",
@@ -233,6 +233,7 @@ def unregister():
     if start_daemon_on_startup:
         try:
             # local_server.stop()
+            local_server.force_kill()
             bpy.app.timers.unregister(work_queue)
             heat_queue = SimpleQueue('heat_queue.db')
             heat_queue.destroy()

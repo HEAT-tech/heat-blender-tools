@@ -3,6 +3,7 @@ import aiohttp_cors
 import os
 from os import environ, path
 import platform
+import signal
 import subprocess
 import sys
 import importlib.util
@@ -19,6 +20,27 @@ def import_from_filepath(filepath):
     spec.loader.exec_module(module)
 
     return module
+
+
+def force_kill(delete_log=False):
+    log_path = path.join(os.path.dirname(__file__), 'local_server.log')
+    try:
+        # Finding the process ID using the log file
+        pid = subprocess.check_output(["lsof", "-t", log_path], text=True).strip()
+
+        if pid:
+            # Killing the process
+            os.kill(int(pid), signal.SIGKILL)
+            print(f"Killed process {pid}")
+
+        # Deleting the log file
+        if delete_log:
+            os.remove(log_path)
+            print(f"Deleted file {log_path}")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
 
 
 simple_queue_filepath = path.join(os.path.dirname(__file__), 'simple_queue.py')

@@ -13,6 +13,7 @@ class APISearchAnimationsOperator(bpy.types.Operator):
     bl_label = "Search Heat Animations"
 
     def execute(self, context):
+        context.window_manager.heat_preview_webui = False
         context.scene.heat_animation_results_list_index = -1
         context.scene.heat_animation_results_list.clear()
         async_task = asyncio.ensure_future(self.get_movements(context))
