@@ -49,10 +49,8 @@ def work_queue():
 
         for area in bpy.context.screen.areas:
             if area.type == 'VIEW_3D':
-                override = bpy.context.copy()
-                override['area'] = area
-                override['region'] = area.regions[0]
-                bpy.ops.heat.download_animation(override, 'INVOKE_DEFAULT')
+                with bpy.context.temp_override(area=area, region=area.regions[0]):
+                    bpy.ops.heat.download_animation('INVOKE_DEFAULT')
                 break
     elif task['task'] == "addCube":
         bpy.ops.mesh.primitive_cube_add()

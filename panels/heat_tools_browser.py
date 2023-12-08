@@ -58,7 +58,7 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
             self.draw_fetch_more(context, layout)
         layout.separator()
 
-        self.draw_heat_animation_as_icon_preview(context, layout)
+        # self.draw_heat_animation_as_icon_preview(context, layout)
 
         if context.scene.heat_animation_id_downloading is not True:
             layout.operator("heat.download_animation", icon="IMPORT", text="Download")
@@ -75,13 +75,14 @@ class HeatToolsBrowserPanel(bpy.types.Panel):
     def draw_auth(self, context, layout):
         layout.label(text="YOU ARE NOT LOGGED IN!")
         layout.separator()
-        layout.label(text="Please enter your API key")
-        layout.label(text="in the addon's preferences")
+        layout.label(text="Login by opening WebUI")
+        layout.label(text="or entering your API key.")
         layout.separator()
         layout.label(text="You can find your API key")
         layout.label(text="in your account dashboard")
         layout.separator()
-        layout.operator("heat.auth_get_api_key")
+        layout.operator("heat.open_web_ui")
+        # layout.operator("heat.auth_get_api_key")
         layout.operator("screen.userpref_show")
 
     def draw_heat_animation_as_icon_preview(self, context, layout):

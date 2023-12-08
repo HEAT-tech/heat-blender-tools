@@ -12,8 +12,8 @@ bl_info = {
     "name": "HeatBlender",
     "author": "Alfredo Gonzalez-Martinez",
     "description": "Heat tools for Blender",
-    "version": (1, 0, 0),
-    "blender": (2, 80, 0),
+    "version": (1, 1, 0),
+    "blender": (3, 20, 0),
     "location": "View3D",
     "warning": "",
     "category": "3D View"

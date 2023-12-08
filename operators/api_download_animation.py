@@ -282,14 +282,16 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
 
     # Draw function
     def draw(self, context):
+        is_blender4 = bpy.app.version[0] > 3
+
         # Inner Cube
         inner_vertices = self.create_inner_cube_vertices(self.width, self.height, self.x_pos, self.y_pos, self.z_pos)
-        inner_shader = gpu.shader.from_builtin('3D_SMOOTH_COLOR')
+        inner_shader = gpu.shader.from_builtin('SMOOTH_COLOR' if is_blender4 else '3D_SMOOTH_COLOR')
         inner_batch = batch_for_shader(inner_shader, 'TRIS', {"pos": inner_vertices, "color": [(1, 0, 0, 0.5)] * len(inner_vertices)})
 
         # Wireframe Cube
         wireframe_vertices, wireframe_edges = self.create_wireframe_cube_vertices(self.width, self.height, self.x_pos, self.y_pos, self.z_pos)
-        wireframe_shader = gpu.shader.from_builtin('3D_UNIFORM_COLOR')
+        wireframe_shader = gpu.shader.from_builtin('UNIFORM_COLOR' if is_blender4 else '3D_UNIFORM_COLOR')
         wireframe_batch = batch_for_shader(wireframe_shader, 'LINES', {"pos": wireframe_vertices}, indices=wireframe_edges)
 
         # Draw Inner Cube

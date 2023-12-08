@@ -18,7 +18,7 @@ class HeatToolsWebUIPanel(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
-        layout.label(text="Daemon running", icon='COLORSET_02_VEC')
+        # layout.label(text="Daemon running", icon='COLORSET_02_VEC')
         layout.operator("heat.open_web_ui")
 
     @classmethod
