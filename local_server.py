@@ -158,8 +158,12 @@ if __name__ == '__main__':
         exit()
 
     print("Resetting queue database...")
-    heat_queue = SimpleQueue('heat_queue.db')
-    heat_queue.destroy()
+    try:
+        heat_queue = SimpleQueue('heat_queue.db')
+        heat_queue.destroy()
+    except:
+        print("Error clearing db. Starting anyway...")
+        pass
 
     print("Starting server...")
     app.add_routes(routes)
