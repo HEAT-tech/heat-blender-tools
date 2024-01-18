@@ -5,10 +5,12 @@ import tempfile
 
 class SimpleQueue:
     def __init__(self, filename=None):
+        appdata_path = os.getenv('APPDATA')
         if filename is None:
-            filename = os.path.join(tempfile.gettempdir(), 'simplequeue.db')
-        else:
-            filename = os.path.join(tempfile.gettempdir(), filename)
+            filename = 'HEAT.db'
+            
+        filename = os.path.join(appdata_path, "HEATDazPlugin", filename) # TODO: Update after Bridge update
+        print(filename)
         self.conn = sqlite3.connect(filename)
         self.filename = filename
 

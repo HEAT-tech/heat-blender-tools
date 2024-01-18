@@ -39,8 +39,8 @@ try:
     from .operators import *
     from .custom_types import *
     from .services import AsyncLoopModalOperator, setup_asyncio_executor
-    from . import local_server
-    from .local_server_health_checker import start_server_if_not_started
+    # from . import local_server
+    # from .local_server_health_checker import start_server_if_not_started
     from .queue_worker import work_queue
 except:
     ensure_pip_and_install_dependencies()
@@ -48,8 +48,8 @@ except:
     from .operators import *
     from .custom_types import *
     from .services import AsyncLoopModalOperator, setup_asyncio_executor
-    from . import local_server
-    from .local_server_health_checker import start_server_if_not_started
+    # from . import local_server
+    # from .local_server_health_checker import start_server_if_not_started
     from .queue_worker import work_queue
 
 classes = (
@@ -211,11 +211,11 @@ def register():
     this_plugin_name = __name__.split(".")[0]
     start_daemon_on_startup = bpy.context.preferences.addons[this_plugin_name].preferences.start_daemon_on_startup
     if start_daemon_on_startup:
-        heat_queue = SimpleQueue('heat_queue.db')
+        heat_queue = SimpleQueue()
         heat_queue.create()
-        local_server.start()
+        # local_server.start()
         bpy.app.timers.register(work_queue, first_interval=5.0, persistent=True)
-        bpy.app.timers.register(start_server_if_not_started, first_interval=7.0)
+        # bpy.app.timers.register(start_server_if_not_started, first_interval=7.0)
 
     # read .env file and set specified presets
     env = DotENV()
@@ -236,10 +236,10 @@ def unregister():
     if start_daemon_on_startup:
         try:
             # local_server.stop()
-            local_server.force_kill()
+            # local_server.force_kill()
             bpy.app.timers.unregister(work_queue)
-            bpy.app.timers.unregister(start_server_if_not_started)
-            heat_queue = SimpleQueue('heat_queue.db')
+            # bpy.app.timers.unregister(start_server_if_not_started)
+            heat_queue = SimpleQueue()
             heat_queue.destroy()
         except:
             pass

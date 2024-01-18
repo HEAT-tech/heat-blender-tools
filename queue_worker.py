@@ -3,7 +3,7 @@ import time
 from .simple_queue import SimpleQueue
 
 def work_queue():
-    queue = SimpleQueue('heat_queue.db')
+    queue = SimpleQueue()
     task = queue.pop()
     if task is None:
         return 0.5
