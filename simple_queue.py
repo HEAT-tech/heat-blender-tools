@@ -7,9 +7,9 @@ class SimpleQueue:
     def __init__(self, filename=None):
         appdata_path = os.getenv('APPDATA')
         if filename is None:
-            filename = 'HEAT.db'
+            filename = 'HEAT-Blender.db'
             
-        filename = os.path.join(appdata_path, "HEATDazPlugin", filename) # TODO: Update after Bridge update
+        filename = os.path.join(appdata_path, "HEATBridge", filename)
         print(filename)
         self.conn = sqlite3.connect(filename)
         self.filename = filename
