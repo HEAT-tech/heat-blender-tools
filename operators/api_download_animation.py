@@ -142,6 +142,8 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
                 self.loading_progress += (current_track / total_tracks) * 0.5
                 if 'heat_' not in track['name']:
                     continue
+                if not armature.data.bones.get(track['name']):
+                    continue
 
                 if track['attr'] == 'translation':
                     data_path = 'pose.bones["{0}"].location'.format(track['name'])

@@ -19,6 +19,18 @@
         "custom_bone_heat_upperarm_r": [
             "heat_upperarm_r",
             "mixamorig:rightarm"
+        ],
+        "custom_bone_heat_root": [
+            "heat_root",
+            "heat_root"
+        ],
+        "custom_bone_heat_spine": [
+            "heat_spine",
+            "heat_spine"
+        ],
+        "custom_bone_heat_spine2": [
+            "heat_spine2",
+            "heat_spine2"
         ]
     },
     "shapes": {}
