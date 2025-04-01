@@ -82,29 +82,33 @@ def is_port_available(port):
 async def login(request):
     auth_token = request.rel_url.query.get('auth_token')
     print(f'The auth_token is {auth_token}!!!')
-    heat_queue = SimpleQueue('heat_queue.db')
+    heat_queue = SimpleQueue('HEAT-Blender.db')
     heat_queue.push('login', {"auth_token": auth_token})
     return web.Response(text=f'The auth_token is {auth_token}')
 
 
 @routes.post('/download-movement')
 async def downloadMovement(request):
-    heat_queue = SimpleQueue('heat_queue.db')
+    heat_queue = SimpleQueue('HEAT-Blender.db')
     data = await request.json()
-    heat_queue.push('downloadMovement', data)
+    wrapped_data = {
+        "exportTarget": "blender",
+        "data": data
+    }
+    heat_queue.push('downloadMovement', wrapped_data)
     return web.Response(text=f'Movement ({data["movementID"]}) added to the download queue!')
 
 
 @routes.get('/ping')
 async def ping(request):
-    heat_queue = SimpleQueue('heat_queue.db')
+    heat_queue = SimpleQueue('HEAT-Blender.db')
     heat_queue.push('pong', {})
     return web.Response(text=f'pong!')
 
 
 @routes.get('/add-cube')
 async def addCube(request):
-    heat_queue = SimpleQueue('heat_queue.db')
+    heat_queue = SimpleQueue('HEAT-Blender.db')
     heat_queue.push('addCube', {})
     return web.Response(text=f'done.')
 
@@ -159,7 +163,7 @@ if __name__ == '__main__':
 
     print("Resetting queue database...")
     try:
-        heat_queue = SimpleQueue('heat_queue.db')
+        heat_queue = SimpleQueue('HEAT-Blender.db')
         heat_queue.destroy()
     except:
         print("Error clearing db. Starting anyway...")
