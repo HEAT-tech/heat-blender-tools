@@ -25,6 +25,9 @@ __pycache__/
 .idea
 .idea/
 
+# updater
+heat-blender-tools_updater
+
 # Distribution / packaging
 .Python
 build/
