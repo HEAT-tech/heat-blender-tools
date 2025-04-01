@@ -93,7 +93,11 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
 
         # download file from heat
         context.scene.heat_animation_id_downloading = True
-        await api.download_file(active_movement.download_url, download_path, self)
+        print('Downloading animation...')
+        download_url = active_movement.download_url.replace('/v1/', '/v2/')
+        # download_url = active_movement.download_url
+        print(download_url)
+        await api.download_file(download_url, download_path, self)
         self.loading_progress = 0.1
 
         # import T69H and/or apply animation fcurves from response
@@ -157,9 +161,9 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
                     for key in track['keys']:
                         t = key[0]
                         pt = pose[track['name']].to_translation()
-                        if track['name'] == 'heat_Root':
-                            values = Vector((key[1][0], key[1][2], key[1][1]))
-                            pose_translation = Vector((pt[0], pt[2], pt[1]))
+                        if track['name'] == 'heat_Hips':
+                            values = Vector((key[1][0], -key[1][2], key[1][1]))
+                            pose_translation = Vector((pt[0], -pt[2], pt[1]))
                         else:
                             values = Vector((key[1][0], key[1][1], key[1][2]))
                             pose_translation = Vector((pt[0], pt[1], pt[2]))
@@ -184,7 +188,7 @@ class APIDownloadAnimationOperator(bpy.types.Operator):
                             translation_curves[i].keyframe_points.insert(frame, value)
                 elif track['attr'] == 'rotation':
                     data_path = 'pose.bones["{0}"].rotation_quaternion'.format(track['name'])
-                    print(data_path)
+                    # print(data_path)
                     quaternions = []
                     for t, value in track['keys']:
                         # manage root bone (quaternions in blender are WXYZ while heat uses XYZW)
