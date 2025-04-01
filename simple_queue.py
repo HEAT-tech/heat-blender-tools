@@ -1,18 +1,45 @@
 import os
 import sqlite3
 import json
-import tempfile
+import sys
+from pathlib import Path
 
 class SimpleQueue:
     def __init__(self, filename=None):
-        if filename is None:
-            filename = os.path.join(tempfile.gettempdir(), 'simplequeue.db')
-        else:
-            filename = os.path.join(tempfile.gettempdir(), filename)
-        self.conn = sqlite3.connect(filename)
-        self.filename = filename
+        appdata_path = self.get_appdata_path("HEATBridge")
+        if not appdata_path:
+            raise RuntimeError("Could not determine AppData path")
 
+        if filename is None:
+            filename = 'simplequeue.db'
+
+        self.filename = os.path.join(appdata_path, filename)
+        # Create parent directory if it doesn't exist
+        Path(appdata_path).mkdir(parents=True, exist_ok=True)
+
+        self.conn = sqlite3.connect(self.filename)
         self.ensure_exists_or_create()
+
+    def get_appdata_path(self, folder):
+        if sys.platform == 'win32':
+            appdata_path = os.getenv('APPDATA')
+            if appdata_path:
+                full_path = os.path.join(appdata_path, folder)
+                Path(full_path).mkdir(parents=True, exist_ok=True)
+                return full_path
+            return None
+
+        elif sys.platform == 'darwin':  # macOS
+            app_support = os.path.expanduser('~/Library/Application Support')
+            full_path = os.path.join(app_support, folder)
+            Path(full_path).mkdir(parents=True, exist_ok=True)
+            return full_path
+
+        else:  # Linux
+            heat_path = os.path.expanduser('~/.heat')
+            full_path = os.path.join(heat_path, folder)
+            Path(full_path).mkdir(parents=True, exist_ok=True)
+            return full_path
 
     def ensure_exists_or_create(self):
         self.create()

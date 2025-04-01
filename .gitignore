@@ -21,6 +21,13 @@ __pycache__/
 # C extensions
 *.so
 
+# JetBrains
+.idea
+.idea/
+
+# updater
+heat-blender-tools_updater
+
 # Distribution / packaging
 .Python
 build/

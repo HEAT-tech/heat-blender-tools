@@ -3,7 +3,7 @@ import time
 from .simple_queue import SimpleQueue
 
 def work_queue():
-    queue = SimpleQueue('heat_queue.db')
+    queue = SimpleQueue('HEAT-Blender.db')
     task = queue.pop()
     if task is None:
         return 0.5
@@ -16,7 +16,7 @@ def work_queue():
         bpy.ops.heat.panic_reset()
     elif task['task'] == "downloadMovement":
         bpy.context.window_manager.heat_preview_webui = True
-        movement = task["data"]
+        movement = task["data"]["data"]
         movement_index = find_animation_index_by_id(movement['movementID'])
 
         if movement_index < 0:
