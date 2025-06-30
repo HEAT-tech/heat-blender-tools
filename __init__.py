@@ -211,7 +211,7 @@ def register():
     this_plugin_name = __name__.split(".")[0]
     start_daemon_on_startup = bpy.context.preferences.addons[this_plugin_name].preferences.start_daemon_on_startup
     if start_daemon_on_startup:
-        heat_queue = SimpleQueue('heat_queue.db')
+        heat_queue = SimpleQueue('HEAT-Blender.db')
         heat_queue.create()
         local_server.start()
         bpy.app.timers.register(work_queue, first_interval=5.0, persistent=True)
@@ -239,7 +239,7 @@ def unregister():
             local_server.force_kill()
             bpy.app.timers.unregister(work_queue)
             bpy.app.timers.unregister(start_server_if_not_started)
-            heat_queue = SimpleQueue('heat_queue.db')
+            heat_queue = SimpleQueue('HEAT-Blender.db')
             heat_queue.destroy()
         except:
             pass
